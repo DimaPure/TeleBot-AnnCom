@@ -3,18 +3,14 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
-# creates an application that is named after the name of the file
-app = Flask(__name__)
 
-
-@app.route('/', methods=['POST', 'GET'])
-def get_page():
+def push_bd():
     if request.method == "POST":
         jsonData = request.get_json()
         val1 = jsonData['name_py']
         val2 = jsonData['email_py']
         val3 = jsonData['numph_py']
-        print(val1,val2,val3)
+        print(val1, val2, val3)
 
         try:
             connection = psycopg2.connect(database='BOT',
@@ -36,9 +32,23 @@ def get_page():
                 cursor.close()
                 connection.close()
 
+
+# creates an application that is named after the name of the file
+app = Flask(__name__)
+
+
+@app.route('/', methods=['POST', 'GET'])
+def get_index():
+    push_bd()
     return render_template('index.html')
+
+
+@app.route('/hotOffer', methods=['POST', 'GET'])
+def get_Hot():
+    push_bd()
+    return render_template('hotOffer.html')
 
 
 # if running this module as a standalone program (cf. command in the Python Dockerfile)
 if __name__ == "__main__":
-   app.run()
+    app.run()

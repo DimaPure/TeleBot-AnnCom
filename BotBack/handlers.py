@@ -17,7 +17,7 @@ from keyboards import bt_sec
 from main import bot, dp
 from text_bt import bot_inf, comp, cont, ex
 
-hotOffer = 'https://tgtest.sahome.ru/'
+hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
 
 
@@ -75,8 +75,7 @@ async def canal(message: types.Message):
     kb_canal = types.InlineKeyboardMarkup()
     kb_canal.insert(types.InlineKeyboardButton(text="|КАНАЛ", url='https://t.me/botN_ai'))
     kb_canal.add(types.InlineKeyboardButton(text="|Главное меню", callback_data="Menu"))
-    await bot.send_photo(message.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_canal, caption=f'''{message.from_user.first_name}, 
-    здесь вы можете перейти в канал и чат нашего проекта 👇''', )
+    await bot.send_photo(message.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_canal, caption=f'''{message.from_user.first_name}, здесь вы можете перейти в канал и чат нашего проекта 👇''', )
 #  -------------------------------------------------
 
 # Help------------------------------------------------

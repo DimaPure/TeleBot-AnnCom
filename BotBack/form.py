@@ -20,7 +20,7 @@ from config import CHANNEL_ID
 
 from main import bot, dp
 
-hotOffer = 'https://tgtest.sahome.ru/'
+hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
 
 
@@ -109,7 +109,7 @@ class FormSos(StatesGroup):
 async def post(message: types.Message):
     await FormSos.message_bot.set()
     await bot.send_message(message.from_user.id,
-                           f'''❓{message.from_user.first_name}, какой у Вас вопрос
+                           f'''{message.from_user.first_name}, какой у Вас вопрос❓
 📝 Опишите максимально подробно возникшую проблему, чем подробнее Вы опишите возникшую проблему, тем быстрее и качественнее мы сможем помочь Вам 👇🏻
 ''')
 
