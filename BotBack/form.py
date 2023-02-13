@@ -20,7 +20,7 @@ from config import CHANNEL_ID
 
 from main import bot, dp
 
-hotOffer = 'https://tgtest.sahome.ru/'
+hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
 
 

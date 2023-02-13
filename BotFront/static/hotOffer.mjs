@@ -217,7 +217,9 @@ function form() {
       validateEmail(email.value) &&
       /\S/.test(email.value) &&
       /\S/.test(name.value)
-    ) {
+    ) 
+    {
+      // ---------------------------- отправка axios --------------------------------------------
       const TOKEN = "5800428906:AAEL2KCZC4TVh2MRTP8zAj7bZHmYnieHLgU";
       const CHAT_ID = "-1001857114920";
       const URI_API = `https://api.telegram.org/bot${TOKEN}/sendMessage`;
@@ -256,39 +258,43 @@ function form() {
           );
           console.warn(err);
         });
-    }setTimeout(()=>{
-      main();
-    }, 3000);
+      // -----------------------------------------------------------------------------
+      
+      //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
+      let name_py = name.value;
+      let email_py = email.value;
+      let numph_py = phoneNumber.value;
+
+      fetch('/hotOffer', {
+          headers : {
+              'Content-Type' : 'application/json'
+          },
+          method : 'POST',
+          body : JSON.stringify( {
+              name_py,
+              email_py,
+              numph_py
+          })
+      })
+      .then(function (response){
+
+          if(response.ok) {
+              console.log("Данные отправлены и получены")
+          }
+          else {
+              throw Error('Что - то пошло не так!');
+          }
+      })
+      .catch(function(error) {
+          console.log(error);
+      });
+     //-----------------------------------------------------------------------------------------------------------------------------------------
+
+      setTimeout(()=>{
+        main();
+      }, 3000);
+    }
   });
-  //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
-        let name_py = name.value;
-        let email_py = email.value;
-        let numph_py = phoneNumber.value;
-
-        fetch('/', {
-            headers : {
-                'Content-Type' : 'application/json'
-            },
-            method : 'POST',
-            body : JSON.stringify( {
-                name_py,
-                email_py,
-                numph_py
-            })
-        })
-        .then(function (response){
-
-            if(response.ok) {
-                console.log("Данные отправлены и получены")
-            }
-            else {
-                throw Error('Что - то пошло не так!');
-            }
-        })
-        .catch(function(error) {
-            console.log(error);
-        });
-       //-----------------------------------------------------------------------------------------------------------------------------------------
 
   telephonyForm.append(telephonyDescription, telephony);
 

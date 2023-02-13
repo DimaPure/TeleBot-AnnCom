@@ -17,7 +17,7 @@ from keyboards import bt_sec
 from main import bot, dp
 from text_bt import bot_inf, comp, cont, ex
 
-hotOffer = 'https://tgtest.sahome.ru/'
+hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
 
 

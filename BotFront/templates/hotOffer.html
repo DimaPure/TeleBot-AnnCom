@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
-<link rel="stylesheet" href="css/test.css">
+<link rel="stylesheet" href="{{url_for('static', filename='css/test.css')}}">
+</style>
 
 <head>
     <meta charset="UTF-8">
@@ -10,7 +11,8 @@
 </head>
 
 <body>
-    <script type="module" src="js/hotOffer.js"></script>
+    <script type="module"  src="{{url_for('static', filename='hotOffer.mjs')}}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </body>
 
 </html>
