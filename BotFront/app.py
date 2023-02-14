@@ -3,6 +3,10 @@ import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
+# creates an application that is named after the name of the file
+app = Flask(__name__, static_url_path="")
+app.config['JSON_AS_ASCII'] = False
+
 
 def push_bd():
     if request.method == "POST":
@@ -33,10 +37,6 @@ def push_bd():
                 connection.close()
 
 
-# creates an application that is named after the name of the file
-app = Flask(__name__)
-
-
 @app.route('/', methods=['POST', 'GET'])
 def get_index():
     push_bd()
@@ -49,6 +49,16 @@ def get_Hot():
     return render_template('hotOffer.html')
 
 
+@app.route('/admin_users', methods=['POST', 'GET'])
+def get_table():
+    return render_template('table.html')
+
+
+@app.route('/admin_data', methods=['POST', 'GET'])
+def get_tableBox():
+    return render_template('tableBox.html')
+
+
 # if running this module as a standalone program (cf. command in the Python Dockerfile)
 if __name__ == "__main__":
-    app.run()
+    app.run(host="0.0.0.0", port="5000", debug=False)
