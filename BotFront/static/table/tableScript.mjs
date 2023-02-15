@@ -1,3 +1,7 @@
+let data_users = document.getElementById("json").innerHTML;
+console.log(typeof data_users);
+console.log(data_users);
+
 const subscribers = [
   {
     registrationDate: "02.06.2022",
@@ -16,8 +20,6 @@ const subscribers = [
     username: "@лох",
   },
 ];
-const json_bd = '{{ data_push | tojson }}';
-console.log(json_bd);
 
 function createFilter() {
   const dateBox = document.createElement("div");

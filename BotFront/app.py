@@ -6,6 +6,7 @@ import json
 import ast
 from flask import jsonify
 from func import *
+import requests
 
 # creates an application that is named after the name of the file
 app = Flask(__name__, static_url_path="")
@@ -24,11 +25,13 @@ def get_Hot():
     return render_template('hotOffer.html')
 
 
+# Переход на админскую страничку
 @app.route('/admin_users', methods=['POST', 'GET'])
 def get_table():
     data_push = withdrawUsers_db()
-    print(data_push)
-    return render_template('table.html')
+    return render_template('table.html', jsonStr=data_push)
+    #    jsonStr=json.dumps(data_push),
+    #    sort_keys=True)
 
 
 @app.route('/admin_data', methods=['POST', 'GET'])
