@@ -24,10 +24,29 @@ index = "https://tgtest.sahome.ru/"
 # -------------------Приветствие-------------------------
 @dp.message_handler(commands=['start'])
 async def process_hi1_command(message: types.Message):
-    await message.reply(f'''🤖 Автодайлер «Бот N.»
-    Голосовой робот-помощник для бизнеса
+    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    buttons = ["Согласен", "Нет"]
+    keyboard.add(*buttons)
+    await message.reply(f'''Бот будет собирать пользовательскую информацию.
+Если Вы ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ, то нажмите кнопку "Согласен". 
+В противном случае, нажмите "Нет".''', reply_markup=keyboard)
 
-    🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог
+
+@dp.message_handler(lambda message: message.text == "Нет")
+async def exit(message: types.Message):
+    await message.reply(f'''К сожалению, пользоваться Ботом у Вас не получится:(''')
+    asyncio.sleep(1)
+    await message.reply(f'''Всего доброго. Возвращайтесь, когда будете готовы предоставить данные!''')
+
+
+
+@dp.message_handler(lambda message: message.text == "Согласен")
+async def start(message: types.Message):
+    await message.reply(f'''🤖 Автодайлер «Бот N.»
+      Голосовой робот-помощник для бизнеса
+
+    🔥передает голосовые сообщения, распознает ответы 
+      Человека, анализирует и умеет вести диалог
     🔥умный секретарь для входящих звонков
 
     ✓ оповещение об акциях
@@ -48,8 +67,8 @@ async def process_hi1_command(message: types.Message):
         print('База подключена')
         cursor = connection.cursor()
         connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-        #print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
-        #if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
+        # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
+        # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
         cursor.execute(f'''insert into FORM_BOTS (user_id, name, username)
                             values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}')
                               on conflict (user_id) do nothing''')
@@ -61,9 +80,9 @@ async def process_hi1_command(message: types.Message):
             cursor.close()
             connection.close()
 
-
     await asyncio.sleep(2)
     await main_menu(message)
+
 
 # -----------------------📝|Предложить пост в канал--------------------------
 # -----------------------🆘|Помощь--------------------------
@@ -75,13 +94,17 @@ async def canal(message: types.Message):
     kb_canal = types.InlineKeyboardMarkup()
     kb_canal.insert(types.InlineKeyboardButton(text="|КАНАЛ", url='https://t.me/botN_ai'))
     kb_canal.add(types.InlineKeyboardButton(text="|Главное меню", callback_data="Menu"))
-    await bot.send_photo(message.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_canal, caption=f'''{message.from_user.first_name}, здесь вы можете перейти в канал и чат нашего проекта 👇''', )
+    await bot.send_photo(message.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_canal,
+                         caption=f'''{message.from_user.first_name}, здесь вы можете перейти в канал и чат нашего проекта 👇''', )
+
+
 #  -------------------------------------------------
 
 # Help------------------------------------------------
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
     await message.reply("Выберите пункт меню!")
+
 
 # Menu------------------------------------------------
 @dp.message_handler(text=['-|Меню'])
@@ -98,8 +121,9 @@ async def main_menu(message: types.Message):
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
  Голосовой робот-помощник для бизнеса
 
- 🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог
- 🔥 умный секретарь для входящих звонков
+ 🔥передает голосовые сообщения, распознает ответы 
+   Человека, анализирует и умеет вести диалог
+ 🔥умный секретарь для входящих звонков
 
  ✓ оповещение об акциях
  ✓ приглашение на вебинар/мероприятие
@@ -119,17 +143,18 @@ async def main_menu(message: types.Message):
     kb1.add(types.InlineKeyboardButton(text="О компании", callback_data="Company"))
     kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
     kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(
-                                                                url=index)))
+        url=index)))
     kb1.insert(types.InlineKeyboardButton(text="🔥Предложение", web_app=WebAppInfo(
-                                                                url=hotOffer)))
+        url=hotOffer)))
     kb1.add(types.InlineKeyboardButton(text="Про Бот N.", callback_data="bot_info"))
     kb1.insert(types.InlineKeyboardButton(text="Контакты", callback_data="contacts"))
     kb1.add(types.InlineKeyboardButton(text="Поделиться", switch_inline_query='https://t.me/practicIST_bot'))
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
  Голосовой робот-помощник для бизнеса
 
- 🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог
- 🔥 умный секретарь для входящих звонков
+ 🔥передает голосовые сообщения, распознает ответы 
+   Человека, анализирует и умеет вести диалог
+ 🔥умный секретарь для входящих звонков
 
  ✓ оповещение об акциях
  ✓ приглашение на вебинар/мероприятие
@@ -140,6 +165,7 @@ async def main_menu(message: types.Message):
  _____
  {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
 
+
 # ----------- Form Консультация ------------
 konsult()
 # ------------------------------------------
@@ -147,10 +173,12 @@ post()
 
 # ---------- Form "Собрать"-----------------
 form_colect()
-#-------------------------------------------
+# -------------------------------------------
 
 # ----------Form "Новое сообщение"----------
 form_new_mess()
+
+
 # ------------------------------------------
 
 
@@ -161,34 +189,35 @@ async def qr_message(call: types.callback_query, state: FSMContext):
     await state.finish()
     code = call.data
     match code:
-# О компании ----------------------------------------------------------------------------------------------------------------------------
+        # О компании ----------------------------------------------------------------------------------------------------------------------------
         case "Company":
             kb_Company = InlineKeyboardMarkup()
             kb_Company.row(types.InlineKeyboardButton(text='✅|бесплатная консультация', callback_data='Konsult'))
             kb_Company.row(types.InlineKeyboardButton(text='🤖 в КОРОБКЕ', web_app=WebAppInfo(
-                                                          url=index)))
+                url=index)))
             kb_Company.row(types.InlineKeyboardButton(text='Контакты', callback_data='contacts'))
             kb_Company.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
-            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_Company, caption=comp)
-# Контакты ------------------------------------------------------------------------------------------------------
+            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_Company,
+                                 caption=comp)
+        # Контакты ------------------------------------------------------------------------------------------------------
         case "contacts":
             kb_contacts = InlineKeyboardMarkup()
             kb_contacts.insert(types.InlineKeyboardButton(text='📨|Написать соощение', callback_data='mess_to_add'))
             kb_contacts.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
-            await bot.send_message(call.from_user.id,cont, disable_web_page_preview=True, reply_markup=kb_contacts)
-# Про бот N ----------------------------------------------------------------------------------------------------------------------
+            await bot.send_message(call.from_user.id, cont, disable_web_page_preview=True, reply_markup=kb_contacts)
+        # Про бот N ----------------------------------------------------------------------------------------------------------------------
         case "bot_info":
             kb_bot_info = InlineKeyboardMarkup()
             kb_bot_info.row(types.InlineKeyboardButton(text='❓ Какие задачи можно решить', callback_data='may_ex'))
             kb_bot_info.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
-            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_bot_info, caption=bot_inf)
-# ❓ Какие задачи можно решить ---------------------------------------------------------------------------------------------------
+            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_bot_info,
+                                 caption=bot_inf)
+        # ❓ Какие задачи можно решить ---------------------------------------------------------------------------------------------------
         case "may_ex":
             kb_may_ex = InlineKeyboardMarkup()
             kb_may_ex.row(types.InlineKeyboardButton(text='⬅| Вернуться назад', callback_data='bot_info'))
             kb_may_ex.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
             await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_may_ex, caption=ex)
-            
 
 
 @dp.message_handler()
@@ -211,4 +240,3 @@ async def admin_reply(message: types.Message):
         await bot.send_message(uid, "<strong>⚠Ответ от администратора: </strong>" + message.text)
     except CantInitiateConversation:
         await bot.reply("Ошибка\n")
-

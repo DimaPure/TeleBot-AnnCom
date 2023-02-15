@@ -42,7 +42,7 @@ async def main_menu(message: types.Message):
     Голосовой робот-помощник для бизнеса
 
     🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог
-    🔥 умный секретарь для входящих звонков
+    🔥умный секретарь для входящих звонков
 
     ✓ оповещение об акциях
     ✓ приглашение на вебинар/мероприятие
@@ -62,11 +62,26 @@ def konsult():
 
     @dp.callback_query_handler(text="Konsult")
     async def answer_k(message: types.message, state: FSMContext):
+        button_cancel = InlineKeyboardButton('Отмена', callback_data='cancel')
+        cancelButton = ReplyKeyboardMarkup(resize_keyboard=True).add(button_cancel)
         await FormKonsult.klient_message.set()
         await bot.send_message(message.from_user.id, f'''
-    ____
-    ✉️<strong>{message.from_user.first_name}, отправьте текст своего сообщения</strong> 👇🏻''',
-                               parse_mode=ParseMode.HTML)
+✉️<strong>{message.from_user.first_name}, отправьте текст своего сообщения</strong> 👇🏻''',
+                               parse_mode=ParseMode.HTML, reply_markup=cancelButton)
+
+    @dp.message_handler(state='*', commands='cancel')
+    @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
+    async def cancel(message: types.message, state: FSMContext):
+        current_state = await state.get_state()
+        if current_state is None:
+            return
+
+        await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
+    _____''', reply_markup=keyboards.bt_sec)
+
+        await state.finish()
+        await asyncio.sleep(1)
+        await main_menu(message)
 
     @dp.message_handler(state=FormKonsult.klient_message)
     async def text_user(callback: types.callback_query, state: FSMContext):
@@ -91,7 +106,7 @@ def konsult():
                 md.text(f'<b><a href="tg://user?id={callback.from_user.id}">{callback.from_user.first_name}</a></b>')))
         await state.finish()
         await bot.send_message(callback.from_user.id,
-                               f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>")
+                               f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>", reply_markup=keyboards.bt_sec)
         await asyncio.sleep(4)
         await main_menu(callback)
 
@@ -107,11 +122,28 @@ class FormSos(StatesGroup):
 
 @dp.message_handler(text=['🆘|Помощь'])
 async def post(message: types.Message):
+    button_cancel = InlineKeyboardButton('Отмена', callback_data='cancel')
+    cancelButton = ReplyKeyboardMarkup(resize_keyboard=True).add(button_cancel)
     await FormSos.message_bot.set()
     await bot.send_message(message.from_user.id,
                            f'''{message.from_user.first_name}, какой у Вас вопрос❓
 📝 Опишите максимально подробно возникшую проблему, чем подробнее Вы опишите возникшую проблему, тем быстрее и качественнее мы сможем помочь Вам 👇🏻
-''')
+''', reply_markup=cancelButton)
+
+
+@dp.message_handler(state='*', commands='cancel')
+@dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
+async def cancel(message: types.message, state: FSMContext):
+    current_state = await state.get_state()
+    if current_state is None:
+        return
+
+    await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
+_____''', reply_markup=keyboards.bt_sec)
+
+    await state.finish()
+    await asyncio.sleep(1)
+    await main_menu(message)
 
 
 @dp.message_handler(state=FormSos.message_bot)
@@ -140,7 +172,8 @@ async def user_text(callback: types.callback_query, state: FSMContext):
                                            f"🆘\n<b>{data['klient_message']}</b>"),
                                        sep='\n'))
         await state.finish()
-        await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝")
+        await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝",
+                               reply_markup=keyboards.bt_sec)
         await asyncio.sleep(2)
         await callback.delete()
         await main_menu(callback)
@@ -214,11 +247,9 @@ def form_colect():
         button_cancel = InlineKeyboardButton('Отмена', callback_data='cancel')
         cancelButton = ReplyKeyboardMarkup(resize_keyboard=True).add(button_cancel)
         await Form.Company.set()
-        await bot.send_message(message.from_user.id, f'''{message.from_user.first_name}, отправьте свое техническое задание для робота и узнайте,
-        чем он может быть Вам полезен!
-    _____
-
-    1️⃣ Название компании 👇🏻''', reply_markup=cancelButton, parse_mode='HTML')
+        await bot.send_message(message.from_user.id, f'''{message.from_user.first_name}, отправьте свое техническое задание для робота и узнайте, чем он может быть Вам полезен!
+_____
+1️⃣ Название компании 👇🏻''', reply_markup=cancelButton, parse_mode='HTML')
 
     @dp.message_handler(state='*', commands='cancel')
     @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
@@ -242,7 +273,7 @@ _____''', reply_markup=keyboards.bt_sec)
             data['Company'] = message.text
 
         await Form.next()
-        await bot.send_message(message.from_user.id, '2️⃣ Номер телефона 👇🏻')
+        await bot.send_message(message.from_user.id,'2️⃣ Номер телефона 👇🏻')
 
     @dp.message_handler(state=Form.Phone)
     async def client_phone(message: types.message, state: FSMContext):
@@ -250,7 +281,7 @@ _____''', reply_markup=keyboards.bt_sec)
             data['Phone'] = message.text
 
         await Form.next()
-        await bot.send_message(message.from_user.id, '3️⃣ Ваше Имя 👇🏻')
+        await bot.send_message(message.from_user.id,'3️⃣ Ваше Имя 👇🏻')
 
     @dp.message_handler(state=Form.ClientName)
     async def client_name(message: types.message, state: FSMContext):
@@ -274,8 +305,9 @@ _____''', reply_markup=keyboards.bt_sec)
         kb_form.add(types.InlineKeyboardButton(text='Робот на входящую связь', callback_data='6'))
 
         await Form.next()
-        await bot.send_message(message.from_user.id, '''5️⃣ Какой тип робота вам нужен? Отправьте боту название 
-        из списка ниже:
+        await bot.send_message(message.from_user.id,
+    '''5️⃣ Какой тип робота вам нужен? Отправьте боту название 
+    из списка ниже:
 
     ✓ Валидация / Фильтрация базы номеров
     ✓ Предиктивный набор (автодозвон)
@@ -285,7 +317,8 @@ _____''', reply_markup=keyboards.bt_sec)
     ✓ Робот на входящую связь
     _____
 
-    ⚠️ Нажмите кнопку или напишите текстом, какие типы робота Вас интересуют 👇🏻''', reply_markup=kb_form)
+    ⚠️ Нажмите кнопку или напишите текстом, какие типы 
+     робота Вас интересуют 👇🏻''', reply_markup=kb_form)
 
     @dp.callback_query_handler(text_contains='', state=Form.RobotType)
     async def client_robot_type(callback_query: types.callback_query, state: FSMContext):
@@ -311,7 +344,7 @@ _____''', reply_markup=keyboards.bt_sec)
 
         await Form.next()
         await bot.send_message(callback_query.from_user.id, '''6️⃣ Укажите количество номеров, 
-        которые планируете загружать в обзвон в день 👇🏻''')
+      которые планируете загружать в обзвон в день 👇🏻''')
 
     @dp.message_handler(state=Form.PhoneSize)
     async def client_phone_size(message: types.message, state: FSMContext):
@@ -323,10 +356,11 @@ _____''', reply_markup=keyboards.bt_sec)
         kb_phones.add(types.InlineKeyboardButton(text='телефония + робот', callback_data='2'))
         await Form.next()
         await bot.send_message(message.from_user.id, '''7️⃣ Для исходящих звонков и рассылки голосовых 
-        сообщений к роботу нужно подключить провайдера 
-        связи. Вы можете подключить своего провайдера – это 
-        бесплатно! либо запросить тарифы на исходящие звонки у 
-        нас. Выберите, что подключаем: 👇🏻''', reply_markup=kb_phones)
+    сообщений к роботу нужно подключить провайдера 
+    связи. Вы можете подключить своего провайдера – это 
+    бесплатно! либо запросить тарифы на исходящие звонки 
+    у нас. 
+    Выберите, что подключаем: 👇🏻''', reply_markup=kb_phones)
 
     @dp.callback_query_handler(text_contains='', state=Form.telephonia)
     async def client_telephonia(callback: types.callback_query, state: FSMContext):
@@ -397,9 +431,11 @@ def form_new_mess():
 
     @dp.callback_query_handler(text="mess_to_add")
     async def robot_voic(message: types.message, state: FSMContext):
+        button_cancel = InlineKeyboardButton('Отмена', callback_data='cancel')
+        cancelButton = ReplyKeyboardMarkup(resize_keyboard=True).add(button_cancel)
         await Forma.Mes.set()
         await bot.send_message(message.from_user.id, f'''<b>Уважаемый {message.from_user.first_name}, отправьте сообщение и с Вами свяжутся!</b>👇🏻
-    _____''', parse_mode=ParseMode.HTML)
+    ''', parse_mode=ParseMode.HTML, reply_markup=cancelButton)
 
     @dp.message_handler(state='*', commands='cancel')
     @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
@@ -432,7 +468,7 @@ def form_new_mess():
             await bot.send_message(CHANNEL_ID, f"@{message.from_user.username}")
             await state.finish()
             await bot.send_message(message.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝',
-                                   parse_mode=ParseMode.HTML)
+                                   parse_mode=ParseMode.HTML, reply_markup=keyboards.bt_sec)
             await asyncio.sleep(3)
             await main_menu(message)
 
