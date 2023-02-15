@@ -1,3 +1,4 @@
+// Данные юзеров
 let data_users = document.getElementById("json").innerHTML;
 console.log(typeof data_users);
 console.log(data_users);
