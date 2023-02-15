@@ -16,6 +16,8 @@ const subscribers = [
     username: "@лох",
   },
 ];
+const json_bd = '{{ data_push | tojson }}';
+console.log(json_bd);
 
 function createFilter() {
   const dateBox = document.createElement("div");
