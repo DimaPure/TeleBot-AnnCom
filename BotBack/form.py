@@ -396,7 +396,7 @@ _____''', reply_markup=keyboards.bt_sec)
                                                    md.text(f"🔥 <strong>{data['telephonia']}</strong>"),
                                                    sep='\n'), reply_markup=markup, parse_mode=ParseMode.HTML)
         await state.finish()
-        await bot.send_message(CHANNEL_ID, f"@CHANNEL_ID, {callback.from_user.username}, {callback.from_user.id}")
+        await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
         await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', parse_mode=ParseMode.HTML)
 
         try:
