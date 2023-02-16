@@ -16,8 +16,6 @@ const subscribers = [
     username: "@лох",
   },
 ];
-const json_bd = '{{ data_push | tojson }}';
-console.log(json_bd);
 
 function createFilter() {
   const dateBox = document.createElement("div");
@@ -88,19 +86,25 @@ function createTable() {
   const timeRegHead = document.createElement("th");
   timeRegHead.textContent = "время РЕГ.";
 
-  const userIdHead = document.createElement("th");
-  userIdHead.textContent = "TG (user_id)";
+  const userEmail = document.createElement("th");
+  userEmail.textContent = "Email";
 
   const firstNameHead = document.createElement("th");
-  firstNameHead.textContent = "TG (first_name)";
+  firstNameHead.textContent = "TG (name)";
 
-  const lastNameHead = document.createElement("th");
-  lastNameHead.textContent = "TG (last_name)";
+  const userPhone = document.createElement("th");
+  userPhone.textContent = "Номер телефона";
 
-  const userNameHead = document.createElement("th");
-  userNameHead.textContent = "TG (username)";
+  // Данные юзеров
+  const data_users = document.getElementById("json").innerHTML;
+  console.log(data_users);
 
-  for (let subscriber of subscribers) {
+  var newJson = data_users.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
+  newJson = newJson.replace(/'/g, '"');
+
+  var data = JSON.parse(newJson);
+
+  for (let subscriber of data) {
     const row = document.createElement("tr");
     row.className = "database";
 
@@ -111,68 +115,57 @@ function createTable() {
     const rowTimeReg = document.createElement("td");
     rowTimeReg.textContent = subscriber.registrationTime;
 
-    const rowUserId = document.createElement("td");
-    rowUserId.textContent = subscriber.userID;
-
     const rowFirstName = document.createElement("td");
-    rowFirstName.textContent = subscriber.firstName;
+    rowFirstName.textContent = subscriber.name;
 
-    const rowLastName = document.createElement("td");
-    rowLastName.textContent = subscriber.lastName;
+    const rowNumber = document.createElement("td");
+    rowNumber.textContent = subscriber.phone;
 
-    const rowUsername = document.createElement("td");
-    rowUsername.textContent = subscriber.username;
+    const rowEmail = document.createElement("td");
+    rowEmail.textContent = subscriber.email;
 
-    row.append(
-      rowRegDate,
-      rowTimeReg,
-      rowUserId,
-      rowFirstName,
-      rowLastName,
-      rowUsername
-    );
+    row.append(rowRegDate, rowTimeReg, rowFirstName, rowEmail, rowNumber);
     tbody.append(row);
   }
 
   mainTable.append(
     regDateHead,
     timeRegHead,
-    userIdHead,
     firstNameHead,
-    lastNameHead,
-    userNameHead
+    userEmail,
+    userPhone
   );
   mainTable.append(tbody);
   document.body.append(mainTable);
 }
 
-const popUp = document.createElement("div");
-popUp.className = "popUp";
+// const popUp = document.createElement("div");
+// popUp.className = "popUp";
 
-const passwordForm = document.createElement("form");
-passwordForm.className = "passwordForm";
+// const passwordForm = document.createElement("form");
+// passwordForm.className = "passwordForm";
 
-const passwordInput = document.createElement("input");
-passwordInput.id = "passwordInput";
-passwordInput.placeholder = "Введите пароль..";
-passwordInput.type = "number";
+// const passwordInput = document.createElement("input");
+// passwordInput.id = "passwordInput";
+// passwordInput.placeholder = "Введите пароль..";
+// passwordInput.type = "number";
 
-const confirmPassword = document.createElement("button");
-confirmPassword.id = "confirmPassword";
-confirmPassword.textContent = "Подтвердить";
+// const confirmPassword = document.createElement("button");
+// confirmPassword.id = "confirmPassword";
+// confirmPassword.textContent = "Подтвердить";
 
-passwordForm.append(passwordInput, confirmPassword);
-popUp.append(passwordForm);
-document.body.append(popUp);
+// passwordForm.append(passwordInput, confirmPassword);
+// popUp.append(passwordForm);
+// document.body.append(popUp);
 
-passwordForm.addEventListener("submit", () => {
-  if (passwordInput.value == 123) {
-    createFilter();
-    createTable();
-    popUp.remove();
-  }
-});
+// passwordForm.addEventListener("submit", () => {
+//   if (passwordInput.value == 123) {
+//     createFilter();
 
+//     popUp.remove();
+//   }
+// });
+createTable();
 var getCellValue = function (tr, idx) {
   return tr.children[idx].innerText || tr.children[idx].textContent;
 };

@@ -35,6 +35,7 @@ def push_bd():
                 connection.close()
 
 
+# Для ссылки admin_users
 def withdrawUsers_db():
     try:
         connection = psycopg2.connect(database='BOT',
