@@ -405,10 +405,10 @@ _____''', reply_markup=keyboards.bt_sec)
             timeN = now.strftime("%d/%m/%Y")
 
             connection = psycopg2.connect(  database='for_bots',
-                                            user='wisdom',
-                                            password='********',
-                                            host='localhost',
-                                            port='5432')
+                                      user='wisdom',
+                                      password='vZSi#6j?X$',
+                                      host='localhost',
+                                      port='5432')
             print('База подключена')
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = connection.cursor()

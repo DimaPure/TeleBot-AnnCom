@@ -19,9 +19,9 @@ def push_bd():
         print(val1, val2, val3, val4, val5, val6, val7)
 
         try:
-            connection = psycopg2.connect(database='BOT',
-                                          user='postgres',
-                                          password='*******',
+            connection = psycopg2.connect(database='for_bots',
+                                          user='wisdom',
+                                          password='vZSi#6j?X$',
                                           host='localhost',
                                           port='5432')
             print('База подключена')
@@ -43,9 +43,9 @@ def push_bd():
 # Выгрузка юзеров
 def withdrawUsers_db():
     try:
-        connection = psycopg2.connect(database='BOT',
-                                      user='postgres',
-                                      password='CHISTOHIN025134',
+        connection = psycopg2.connect(database='for_bots',
+                                      user='wisdom',
+                                      password='vZSi#6j?X$',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -59,10 +59,10 @@ def withdrawUsers_db():
         dict_list = []
         for row in table_users:
             dict_list.append({
-                "user_id": row[0],
-                "name": row[1],
-                "user_name": row[2],
-                "time": row[3]
+                "user_id": str(row[0]),
+                "name": str(row[1]),
+                "user_name": str(row[2]),
+                "time": str(row[3])
             })
         return dict_list
 
@@ -77,9 +77,9 @@ def withdrawUsers_db():
 # Выгрузка данных с сайта
 def withdrawDataSite_db():
     try:
-        connection = psycopg2.connect(database='BOT',
-                                      user='postgres',
-                                      password='CHISTOHIN025134',
+        connection = psycopg2.connect(database='for_bots',
+                                      user='wisdom',
+                                      password='vZSi#6j?X$',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -93,13 +93,13 @@ def withdrawDataSite_db():
         dict_list = []
         for row in table_users:
             dict_list.append({
-                "name": row[0],
-                "email": row[1],
-                "phone": row[2],
-                "time": row[3],
-                "company": row[4],
-                "crm": row[5],
-                "card": row[6]
+                "name": str(row[0]),
+                "email": str(row[1]),
+                "phone": str(row[2]),
+                "time": str(row[3]),
+                "company": str(row[4]),
+                "crm": str(row[5]),
+                "card": str(row[6])
             })
         return dict_list
 
@@ -114,9 +114,9 @@ def withdrawDataSite_db():
 # Выгрузка данных из Бота
 def withdrawDataBot_db():
     try:
-        connection = psycopg2.connect(database='BOT',
-                                      user='postgres',
-                                      password='CHISTOHIN025134',
+        connection = psycopg2.connect(database='for_bots',
+                                      user='wisdom',
+                                      password='vZSi#6j?X$',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -130,12 +130,12 @@ def withdrawDataBot_db():
         dict_list = []
         for row in table_users:
             dict_list.append({
-                "company": row[0],
-                "phone": row[1],
-                "email": row[2],
-                "name": row[3],
-                "time": row[4],
-                "username": row[5]
+                "company": str(row[0]),
+                "phone": str(row[1]),
+                "email": str(row[2]),
+                "name": str(row[3]),
+                "time": str(row[4]),
+                "username": str(row[5])
             })
         return dict_list
 
