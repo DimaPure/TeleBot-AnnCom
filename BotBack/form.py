@@ -400,6 +400,10 @@ _____''', reply_markup=keyboards.bt_sec)
         await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', parse_mode=ParseMode.HTML)
 
         try:
+            # Дата
+            now = datetime.datetime.now()
+            timeN = now.strftime("%d/%m/%Y")
+
             connection = psycopg2.connect(  database='for_bots',
                                             user='wisdom',
                                             password='********',
@@ -408,8 +412,8 @@ _____''', reply_markup=keyboards.bt_sec)
             print('База подключена')
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = connection.cursor()
-            cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail) 
-               VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}')''')
+            cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time) 
+               VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}')''')
         except (Exception, Error) as error:
             print('Ошибка при работе с PostgreSQL в форме', error)
         finally:

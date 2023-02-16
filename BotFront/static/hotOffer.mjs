@@ -261,33 +261,46 @@ function form() {
       // -----------------------------------------------------------------------------
       
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = mm + '/' + dd + '/' + yyyy;
+
       let name_py = name.value;
       let email_py = email.value;
       let numph_py = phoneNumber.value;
+      let time = today;
+      let compan = company.value;
+      let crm = CRMName.value;
+      let cardd = "Горячее предложение";
 
-      fetch('/hotOffer', {
-          headers : {
-              'Content-Type' : 'application/json'
-          },
-          method : 'POST',
-          body : JSON.stringify( {
-              name_py,
-              email_py,
-              numph_py
-          })
-      })
-      .then(function (response){
 
-          if(response.ok) {
-              console.log("Данные отправлены и получены")
-          }
-          else {
-              throw Error('Что - то пошло не так!');
-          }
+      fetch("/", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name_py,
+          email_py,
+          numph_py,
+          time,
+          compan,
+          crm,
+          cardd
+        }),
       })
-      .catch(function(error) {
+        .then(function (response) {
+          if (response.ok) {
+            console.log("Данные отправлены и получены");
+          } else {
+            throw Error("Что - то пошло не так!");
+          }
+        })
+        .catch(function (error) {
           console.log(error);
-      });
+        });
      //-----------------------------------------------------------------------------------------------------------------------------------------
 
       setTimeout(()=>{

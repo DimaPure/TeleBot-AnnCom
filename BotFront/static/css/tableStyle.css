@@ -1,6 +1,9 @@
 #json{
   display: none;
 }
+#json2{
+  display: none;
+}
 table {
   margin: 0 auto;
   border-collapse: collapse;

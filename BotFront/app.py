@@ -29,14 +29,18 @@ def get_Hot():
 @app.route('/admin_users', methods=['POST', 'GET'])
 def get_table():
     data_push = withdrawUsers_db()
+    print(data_push)
     return render_template('table.html', jsonStr=data_push)
-    #    jsonStr=json.dumps(data_push),
-    #    sort_keys=True)
 
 
 @app.route('/admin_data', methods=['POST', 'GET'])
 def get_tableBox():
-    return render_template('tableBox.html')
+    data_push = withdrawDataSite_db()
+    data_push2 = withdrawDataBot_db()
+    print(data_push, data_push2)
+    return render_template('tableBox.html',
+                           jsonStr2=data_push,
+                           jsonStr3=data_push2)
 
 
 # if running this module as a standalone program (cf. command in the Python Dockerfile)
