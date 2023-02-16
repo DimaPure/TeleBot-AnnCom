@@ -35,14 +35,14 @@ async def process_hi1_command(message: types.Message):
 @dp.message_handler(lambda message: message.text == "Нет")
 async def exit(message: types.Message):
     await message.reply(f'''К сожалению, пользоваться Ботом у Вас не получится:(''')
-    asyncio.sleep(1)
+    time.sleep(1)
     await message.reply(f'''Всего доброго. Возвращайтесь, когда будете готовы предоставить данные!''')
 
 
 
 @dp.message_handler(lambda message: message.text == "Согласен")
-async def start(message: types.Message):
-    await message.reply(f'''🤖 Автодайлер «Бот N.»
+async def start1(message: types.Message):
+    await message.answer(f'''🤖 Автодайлер «Бот N.»
       Голосовой робот-помощник для бизнеса
 
     🔥передает голосовые сообщения, распознает ответы 
@@ -123,6 +123,7 @@ async def main_menu(message: types.Message):
 
  🔥передает голосовые сообщения, распознает ответы 
    Человека, анализирует и умеет вести диалог
+   
  🔥умный секретарь для входящих звонков
 
  ✓ оповещение об акциях
@@ -150,10 +151,10 @@ async def main_menu(message: types.Message):
     kb1.insert(types.InlineKeyboardButton(text="Контакты", callback_data="contacts"))
     kb1.add(types.InlineKeyboardButton(text="Поделиться", switch_inline_query='https://t.me/practicIST_bot'))
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
- Голосовой робот-помощник для бизнеса
+  Голосовой робот-помощник для бизнеса
 
- 🔥передает голосовые сообщения, распознает ответы 
-   Человека, анализирует и умеет вести диалог
+ 🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог\n
+ 
  🔥умный секретарь для входящих звонков
 
  ✓ оповещение об акциях
@@ -222,20 +223,19 @@ async def qr_message(call: types.callback_query, state: FSMContext):
 
 @dp.message_handler()
 async def admin_reply(message: types.Message):
-    me = await bot.get_me()
-    if not message.reply_to_message:
-        return
-    if message.reply_to_message.from_user.id != me.id:
-        return
-    if not message.text:
-        await bot.send_message(message.chat.id, "Я обрабатываю только текст")
-        return
-    if message.reply_to_message.text.split('\n')[0] not in keyboards.vturmu:
-        return
+    # me = await bot.get_me()
+    # if not message.reply_to_message:
+    #     return
+    # if message.reply_to_message.from_user.id != me.id:
+    #     return
+    # if not message.text:
+    #     await bot.send_message(message.chat.id, "Я обрабатываю только текст")
+    #     return
+    # if message.reply_to_message.text.split('\n')[0] not in keyboards.vturmu:
+    #     return
 
     # Парсим id из сообщения
-    uid = message.reply_to_message.text.split("TG user id: ")[1].split("\n")[
-        0]
+    uid = message.reply_to_message.text.split(", ")[1]
     try:
         await bot.send_message(uid, "<strong>⚠Ответ от администратора: </strong>" + message.text)
     except CantInitiateConversation:
