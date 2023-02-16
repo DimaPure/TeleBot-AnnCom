@@ -61,7 +61,8 @@ def withdrawUsers_db():
             dict_list.append({
                 "user_id": row[0],
                 "name": row[1],
-                "user_name": row[2]
+                "user_name": row[2],
+                "time": row[3]
             })
         return dict_list
 
@@ -133,7 +134,8 @@ def withdrawDataBot_db():
                 "phone": row[1],
                 "email": row[2],
                 "name": row[3],
-                "time": row[4]
+                "time": row[4],
+                "username": row[5]
             })
         return dict_list
 

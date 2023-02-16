@@ -412,8 +412,8 @@ _____''', reply_markup=keyboards.bt_sec)
             print('База подключена')
             connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             cursor = connection.cursor()
-            cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time) 
-               VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}')''')
+            cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time, username) 
+               VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}','{callback.from_user.username}')''')
         except (Exception, Error) as error:
             print('Ошибка при работе с PostgreSQL в форме', error)
         finally:
