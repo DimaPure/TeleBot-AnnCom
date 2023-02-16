@@ -1,322 +1,9 @@
-const subscribers = [
-  {
-    registrationDate: "13.06.2022",
-    registrationTime: "00:20:00",
-    userID: "46930862",
-    firstName: "Николай",
-    lastName: "Николаев",
-    username: "@лох",
-    box: "box",
-    company: "google",
-    phoneNumber: "+7293752393952",
-    name: "НЕ ЛОХ",
-    email: "trodiso@ivs.ru",
-    telephony: "СВОЯ телефония",
-    robotType: "robotType",
-    numberOfPhones: "количество",
-    CRMName: "crm",
-    CMS: "Карина - лох",
-    answer: "Нажать клавишу для ответа",
-    scenario: "напоминание об оплате долга",
-    sending: "Точно нет",
-  },
-  {
-    registrationDate: "02.06.2022",
-    registrationTime: "22:20:00",
-    userID: "78523972",
-    firstName: "Амир",
-    lastName: "Амирович",
-    username: "@nekashtanka",
-    box: "box",
-    company: "google",
-    phoneNumber: "+7293752393952",
-    name: "ЛОХ",
-    email: "trodiso@ivs.ru",
-    telephony: "СВОЯ телефония",
-    robotType: "robotType",
-    numberOfPhones: "количество",
-    CRMName: "crm",
-    CMS: "Карина - лох",
-    answer: "Произнести ответ",
-    scenario: "прием входящих звонков для передачи показаний",
-    sending: "Нет",
-  },
-  {
-    registrationDate: "02.06.2022",
-    registrationTime: "22:20:00",
-    userID: "78523972",
-    firstName: "Карина",
-    lastName: "Трофимова",
-    username: "@nekashtanka",
-    box: "box",
-    company: "google",
-    phoneNumber: "+7293752393952",
-    name: "ЛОХ",
-    email: "trodiso@ivs.ru",
-    telephony: "СВОЯ телефония",
-    robotType: "robotType",
-    numberOfPhones: "количество",
-    CRMName: "crm",
-    CMS: "Карина - лох",
-    answer: "Произнести ответ",
-    scenario: "прием входящих звонков для передачи показаний",
-    sending: "Нет",
-  },
-];
-
-function createFilter() {
-  const dateBox = document.createElement("div");
-  dateBox.className = "dateBox";
-
-  const startDate = document.createElement("input");
-  startDate.type = "date";
-  startDate.className = "startDate";
-
-  const endDate = document.createElement("input");
-  endDate.type = "date";
-  endDate.className = "endDate";
-
-  const dash = document.createElement("label");
-  dash.className = "dash";
-  dash.textContent = " - ";
-
-  const searchDate = document.createElement("button");
-  searchDate.className = "searchDate";
-  searchDate.textContent = "Отфильтровать";
-
-  searchDate.addEventListener("click", () => {
-    const tr = document.getElementsByClassName("database");
-
-    const backTTF = document.createElement("button");
-    backTTF.textContent = "Назад";
-    document.body.prepend(backTTF);
-
-    backTTF.addEventListener("click", () => {
-      window.location.href = "tableBox.html";
-    });
-
-    for (var i = 0; i < tr.length; i++) {
-      var td = tr[i].getElementsByClassName("date")[0];
-      let td_date = td.innerHTML;
-      td_date =
-        td_date.substr(6, 4) +
-        "-" +
-        td_date.substr(3, 2) +
-        "-" +
-        td_date.substr(0, 2);
-
-      let start = startDate.value;
-      let end = endDate.value;
-      if (td_date < start || end < td_date) {
-        tr[i].style.position = "absolute";
-        tr[i].style.visibility = "hidden";
-      }
-    }
-  });
-
-  document.body.append(dateBox, searchDate);
-  dateBox.append(startDate, dash, endDate);
+function createArray(arr) {
+  var newJson = arr.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
+  newJson = newJson.replace(/'/g, '"');
+  var data = JSON.parse(newJson);
+  return data;
 }
-
-function createTable() {
-  const mainTable = document.createElement("table");
-  mainTable.className = "mainTable";
-  const tbody = document.createElement("tbody");
-
-  const regDateHead = document.createElement("th");
-  regDateHead.textContent = "дата РЕГ.";
-
-  const timeRegHead = document.createElement("th");
-  timeRegHead.textContent = "время РЕГ.";
-
-  const userIdHead = document.createElement("th");
-  userIdHead.textContent = "TG (user_id)";
-
-  const firstNameHead = document.createElement("th");
-  firstNameHead.textContent = "TG (first_name)";
-
-  const lastNameHead = document.createElement("th");
-  lastNameHead.textContent = "TG (last_name)";
-
-  const userNameHead = document.createElement("th");
-  userNameHead.textContent = "TG (username)";
-
-  const boxHead = document.createElement("th");
-  boxHead.textContent = "Название коробки";
-
-  const companyHead = document.createElement("th");
-  companyHead.textContent = "Компания";
-
-  const numberHead = document.createElement("th");
-  numberHead.textContent = "Номер телефона";
-
-  const nameHead = document.createElement("th");
-  nameHead.textContent = "Имя";
-
-  const emailHead = document.createElement("th");
-  emailHead.textContent = "e-mail";
-
-  const telephonyHead = document.createElement("th");
-  telephonyHead.textContent = "Что подключаем";
-
-  const robotTypeHead = document.createElement("th");
-  robotTypeHead.textContent = "Тип робота";
-
-  const numberOfHead = document.createElement("th");
-  numberOfHead.textContent = "Количество клиентов";
-
-  const CRMNameHead = document.createElement("th");
-  CRMNameHead.textContent = "Название CRM";
-
-  const CMSHead = document.createElement("th");
-  CMSHead.textContent = "Связка с CMS";
-
-  const answerHead = document.createElement("th");
-  answerHead.textContent = "Лид должен";
-
-  const scenarioHead = document.createElement("th");
-  scenarioHead.textContent = "Подходящий сценарий";
-
-  const sendingHead = document.createElement("th");
-  sendingHead.textContent = "Рассылка сообщений";
-
-  for (let subscriber of subscribers) {
-    const row = document.createElement("tr");
-    row.className = "database";
-
-    const rowRegDate = document.createElement("td");
-    rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.registrationDate;
-
-    const rowTimeReg = document.createElement("td");
-    rowTimeReg.textContent = subscriber.registrationTime;
-
-    const rowUserId = document.createElement("td");
-    rowUserId.textContent = subscriber.userID;
-
-    const rowFirstName = document.createElement("td");
-    rowFirstName.textContent = subscriber.firstName;
-
-    const rowLastName = document.createElement("td");
-    rowLastName.textContent = subscriber.lastName;
-
-    const rowUsername = document.createElement("td");
-    rowUsername.textContent = subscriber.username;
-
-    const rowBox = document.createElement("td");
-    rowBox.textContent = subscriber.box;
-
-    const rowCompany = document.createElement("td");
-    rowCompany.textContent = subscriber.company;
-
-    const rowNumber = document.createElement("td");
-    rowNumber.textContent = subscriber.phoneNumber;
-
-    const rowName = document.createElement("td");
-    rowName.textContent = subscriber.name;
-
-    const rowEmail = document.createElement("td");
-    rowEmail.textContent = subscriber.email;
-
-    const rowTelephony = document.createElement("td");
-    rowTelephony.textContent = subscriber.telephony;
-
-    const rowRobotType = document.createElement("td");
-    rowRobotType.textContent = subscriber.robotType;
-
-    const rowNumberOf = document.createElement("td");
-    rowNumberOf.textContent = subscriber.numberOfPhones;
-
-    const rowCRM = document.createElement("td");
-    rowCRM.textContent = subscriber.CRMName;
-
-    const rowCMS = document.createElement("td");
-    rowCMS.textContent = subscriber.CMS;
-
-    const rowAnswer = document.createElement("td");
-    rowAnswer.textContent = subscriber.answer;
-
-    const rowScenario = document.createElement("td");
-    rowScenario.textContent = subscriber.scenario;
-
-    const rowSending = document.createElement("td");
-    rowSending.textContent = subscriber.sending;
-
-    row.append(
-      rowRegDate,
-      rowTimeReg,
-      rowUserId,
-      rowFirstName,
-      rowLastName,
-      rowUsername,
-      rowBox,
-      rowCompany,
-      rowNumber,
-      rowName,
-      rowEmail,
-      rowTelephony,
-      rowRobotType,
-      rowNumberOf,
-      rowCRM,
-      rowCMS,
-      rowAnswer,
-      rowScenario,
-      rowSending
-    );
-    tbody.append(row);
-  }
-
-  mainTable.append(
-    regDateHead,
-    timeRegHead,
-    userIdHead,
-    firstNameHead,
-    lastNameHead,
-    userNameHead,
-    boxHead,
-    companyHead,
-    numberHead,
-    nameHead,
-    emailHead,
-    telephonyHead,
-    robotTypeHead,
-    numberOfHead,
-    CRMNameHead,
-    CMSHead,
-    answerHead,
-    scenarioHead,
-    sendingHead
-  );
-  mainTable.append(tbody);
-  document.body.append(mainTable);
-}
-
-const popUp = document.createElement("div");
-popUp.className = "popUp";
-
-const passwordForm = document.createElement("form");
-passwordForm.className = "passwordForm";
-
-const passwordInput = document.createElement("input");
-passwordInput.id = "passwordInput";
-passwordInput.placeholder = "Введите пароль..";
-passwordInput.type = "number";
-
-const confirmPassword = document.createElement("button");
-confirmPassword.id = "confirmPassword";
-confirmPassword.textContent = "Подтвердить";
-
-passwordForm.append(passwordInput, confirmPassword);
-popUp.append(passwordForm);
-document.body.append(popUp);
-
-passwordForm.addEventListener("submit", () => {
-  if (passwordInput.value == 123) {
-    createFilter();
-    createTable();
-    popUp.remove();
-  }
-});
 
 var getCellValue = function (tr, idx) {
   return tr.children[idx].innerText || tr.children[idx].textContent;
@@ -351,3 +38,292 @@ Array.prototype.slice
         });
     });
   });
+
+function createFilter() {
+  const dateBox = document.createElement("div");
+  dateBox.className = "dateBox";
+
+  const startDate = document.createElement("input");
+  startDate.type = "date";
+  startDate.className = "startDate";
+
+  const endDate = document.createElement("input");
+  endDate.type = "date";
+  endDate.className = "endDate";
+
+  const dash = document.createElement("label");
+  dash.className = "dash";
+  dash.textContent = " - ";
+
+  const searchDate = document.createElement("button");
+  searchDate.className = "searchDate";
+  searchDate.textContent = "Отфильтровать";
+
+  searchDate.addEventListener("click", () => {
+    const tr = document.getElementsByClassName("database");
+
+    const backTTF = document.createElement("button");
+    backTTF.textContent = "Назад";
+    document.body.prepend(backTTF);
+
+    backTTF.addEventListener("click", () => {
+      const mainTable = document.querySelector(".mainTable");
+      mainTable.remove();
+      backTTF.remove();
+      createTable();
+    });
+
+    for (var i = 0; i < tr.length; i++) {
+      var td = tr[i].getElementsByClassName("date")[0];
+      let td_date = td.innerHTML;
+      td_date =
+        td_date.substr(6, 4) +
+        "-" +
+        td_date.substr(3, 2) +
+        "-" +
+        td_date.substr(0, 2);
+
+      let start = startDate.value;
+      let end = endDate.value;
+      if (td_date < start || end < td_date) {
+        tr[i].style.position = "absolute";
+        tr[i].style.visibility = "hidden";
+      }
+    }
+  });
+
+  document.body.append(dateBox, searchDate);
+  dateBox.append(startDate, dash, endDate);
+}
+
+function createTable() {
+  const mainTable = document.createElement("table");
+  mainTable.className = "mainTable";
+  const tbody = document.createElement("tbody");
+  tbody.className = "tBody";
+
+  const fromSourceHead = document.createElement("th");
+  fromSourceHead.textContent = "Источник";
+
+  const regDateHead = document.createElement("th");
+  regDateHead.textContent = "дата РЕГ.";
+
+  const firstNameHead = document.createElement("th");
+  firstNameHead.textContent = "TG (first_name)";
+
+  const userNameHead = document.createElement("th");
+  userNameHead.textContent = "TG (username)";
+
+  const boxHead = document.createElement("th");
+  boxHead.textContent = "Название коробки";
+
+  const companyHead = document.createElement("th");
+  companyHead.textContent = "Компания";
+
+  const numberHead = document.createElement("th");
+  numberHead.textContent = "Номер телефона";
+
+  const emailHead = document.createElement("th");
+  emailHead.textContent = "e-mail";
+
+  const CRMNameHead = document.createElement("th");
+  CRMNameHead.textContent = "Название CRM";
+
+  mainTable.append(
+    fromSourceHead,
+    regDateHead,
+    firstNameHead,
+    userNameHead,
+    boxHead,
+    companyHead,
+    numberHead,
+    emailHead,
+    CRMNameHead
+  );
+  mainTable.append(tbody);
+  document.body.append(mainTable);
+  const data_site = document.getElementById("json2").innerHTML;
+
+  const data_bot = document.getElementById("json3").innerHTML;
+
+  const data = createArray(data_site);
+  const data2 = createArray(data_bot);
+
+  createData(data);
+  createDataBot(data2);
+}
+
+function createData(data) {
+  for (let subscriber of data) {
+    const row = document.createElement("tr");
+    row.className = "database";
+
+    const fromSource = document.createElement("td");
+    fromSource.className = "fromSource";
+    fromSource.textContent = "Прислано с сайта";
+
+    const rowRegDate = document.createElement("td");
+    rowRegDate.className = "date";
+    rowRegDate.textContent = subscriber.time;
+
+    const rowFirstName = document.createElement("td");
+    rowFirstName.textContent = subscriber.name;
+
+    const rowUsername = document.createElement("td");
+    rowUsername.textContent = subscriber.username;
+
+    const rowBox = document.createElement("td");
+    rowBox.textContent = subscriber.card;
+
+    const rowCompany = document.createElement("td");
+    rowCompany.textContent = subscriber.company;
+
+    const rowNumber = document.createElement("td");
+    rowNumber.textContent = subscriber.phone;
+
+    const rowName = document.createElement("td");
+    rowName.textContent = subscriber.email;
+
+    const rowEmail = document.createElement("td");
+    rowEmail.textContent = subscriber.crm;
+
+    const rowTelephony = document.createElement("td");
+    rowTelephony.textContent = subscriber.telephony;
+
+    const rowRobotType = document.createElement("td");
+    rowRobotType.textContent = subscriber.robotType;
+
+    const rowNumberOf = document.createElement("td");
+    rowNumberOf.textContent = subscriber.numberOfPhones;
+
+    const rowCRM = document.createElement("td");
+    rowCRM.textContent = subscriber.CRMName;
+
+    const rowCMS = document.createElement("td");
+    rowCMS.textContent = subscriber.CMS;
+
+    const rowAnswer = document.createElement("td");
+    rowAnswer.textContent = subscriber.answer;
+
+    const rowScenario = document.createElement("td");
+    rowScenario.textContent = subscriber.scenario;
+
+    const rowSending = document.createElement("td");
+    rowSending.textContent = subscriber.sending;
+
+    row.append(
+      fromSource,
+      rowRegDate,
+      rowFirstName,
+      rowUsername,
+      rowBox,
+      rowCompany,
+      rowNumber,
+      rowName,
+      rowEmail
+    );
+    const tbody = document.querySelector(".tBody");
+    tbody.append(row);
+  }
+}
+
+function createDataBot(data) {
+  for (let subscriber of data) {
+    const row = document.createElement("tr");
+    row.className = "database";
+
+    const fromSource = document.createElement("td");
+    fromSource.className = "fromSource";
+    fromSource.textContent = "Прислано с бота";
+
+    const rowRegDate = document.createElement("td");
+    rowRegDate.className = "date";
+    rowRegDate.textContent = subscriber.time;
+
+    const rowFirstName = document.createElement("td");
+    rowFirstName.textContent = subscriber.name;
+
+    const rowUsername = document.createElement("td");
+    rowUsername.textContent = subscriber.username;
+
+    const rowBox = document.createElement("td");
+    rowBox.textContent = subscriber.card;
+
+    const rowCompany = document.createElement("td");
+    rowCompany.textContent = subscriber.company;
+
+    const rowNumber = document.createElement("td");
+    rowNumber.textContent = subscriber.phone;
+
+    const rowName = document.createElement("td");
+    rowName.textContent = subscriber.email;
+
+    const rowEmail = document.createElement("td");
+    rowEmail.textContent = subscriber.crm;
+
+    const rowTelephony = document.createElement("td");
+    rowTelephony.textContent = subscriber.telephony;
+
+    const rowRobotType = document.createElement("td");
+    rowRobotType.textContent = subscriber.robotType;
+
+    const rowNumberOf = document.createElement("td");
+    rowNumberOf.textContent = subscriber.numberOfPhones;
+
+    const rowCRM = document.createElement("td");
+    rowCRM.textContent = subscriber.CRMName;
+
+    const rowCMS = document.createElement("td");
+    rowCMS.textContent = subscriber.CMS;
+
+    const rowAnswer = document.createElement("td");
+    rowAnswer.textContent = subscriber.answer;
+
+    const rowScenario = document.createElement("td");
+    rowScenario.textContent = subscriber.scenario;
+
+    const rowSending = document.createElement("td");
+    rowSending.textContent = subscriber.sending;
+
+    row.append(
+      fromSource,
+      rowRegDate,
+      rowFirstName,
+      rowUsername,
+      rowBox,
+      rowCompany,
+      rowNumber,
+      rowName,
+      rowEmail
+    );
+    const tbody = document.querySelector(".tBody");
+    tbody.append(row);
+  }
+}
+
+const popUp = document.createElement("div");
+popUp.className = "popUp";
+
+const passwordForm = document.createElement("form");
+passwordForm.className = "passwordForm";
+
+const passwordInput = document.createElement("input");
+passwordInput.id = "passwordInput";
+passwordInput.placeholder = "Введите пароль..";
+passwordInput.type = "number";
+
+const confirmPassword = document.createElement("button");
+confirmPassword.id = "confirmPassword";
+confirmPassword.textContent = "Подтвердить";
+
+passwordForm.append(passwordInput, confirmPassword);
+popUp.append(passwordForm);
+document.body.append(popUp);
+
+passwordForm.addEventListener("submit", () => {
+  if (passwordInput.value == 123) {
+    createFilter();
+    createTable();
+    popUp.remove();
+  }
+});

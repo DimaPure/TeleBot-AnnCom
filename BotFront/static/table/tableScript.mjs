@@ -49,7 +49,10 @@ function createFilter() {
     document.body.prepend(backTTF);
 
     backTTF.addEventListener("click", () => {
-      window.location.href = "table.html";
+      const mainTable = document.querySelector(".mainTable");
+      mainTable.remove();
+      backTTF.remove();
+      createTable();
     });
 
     for (var i = 0; i < tr.length; i++) {
@@ -110,7 +113,7 @@ function createTable() {
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.registrationDate;
+    rowRegDate.textContent = subscriber.time;
 
     const rowTimeReg = document.createElement("td");
     rowTimeReg.textContent = subscriber.registrationTime;
@@ -124,17 +127,11 @@ function createTable() {
     const rowEmail = document.createElement("td");
     rowEmail.textContent = subscriber.email;
 
-    row.append(rowRegDate, rowTimeReg, rowFirstName, rowEmail, rowNumber);
+    row.append(rowRegDate, rowFirstName, rowEmail, rowNumber);
     tbody.append(row);
   }
 
-  mainTable.append(
-    regDateHead,
-    timeRegHead,
-    firstNameHead,
-    userEmail,
-    userPhone
-  );
+  mainTable.append(regDateHead, firstNameHead, userEmail, userPhone);
   mainTable.append(tbody);
   document.body.append(mainTable);
 }
