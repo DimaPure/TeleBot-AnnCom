@@ -139,33 +139,33 @@ function createTable() {
   document.body.append(mainTable);
 }
 
-// const popUp = document.createElement("div");
-// popUp.className = "popUp";
+const popUp = document.createElement("div");
+popUp.className = "popUp";
 
-// const passwordForm = document.createElement("form");
-// passwordForm.className = "passwordForm";
+const passwordForm = document.createElement("form");
+passwordForm.className = "passwordForm";
 
-// const passwordInput = document.createElement("input");
-// passwordInput.id = "passwordInput";
-// passwordInput.placeholder = "Введите пароль..";
-// passwordInput.type = "number";
+const passwordInput = document.createElement("input");
+passwordInput.id = "passwordInput";
+passwordInput.placeholder = "Введите пароль..";
+passwordInput.type = "number";
 
-// const confirmPassword = document.createElement("button");
-// confirmPassword.id = "confirmPassword";
-// confirmPassword.textContent = "Подтвердить";
+const confirmPassword = document.createElement("button");
+confirmPassword.id = "confirmPassword";
+confirmPassword.textContent = "Подтвердить";
 
-// passwordForm.append(passwordInput, confirmPassword);
-// popUp.append(passwordForm);
-// document.body.append(popUp);
+passwordForm.append(passwordInput, confirmPassword);
+popUp.append(passwordForm);
+document.body.append(popUp);
 
-// passwordForm.addEventListener("submit", () => {
-//   if (passwordInput.value == 123) {
-//     createFilter();
+passwordForm.addEventListener("submit", () => {
+  if (passwordInput.value == 123) {
+    createFilter();
+    createTable();
+    popUp.remove();
+  }
+});
 
-//     popUp.remove();
-//   }
-// });
-createTable();
 var getCellValue = function (tr, idx) {
   return tr.children[idx].innerText || tr.children[idx].textContent;
 };
