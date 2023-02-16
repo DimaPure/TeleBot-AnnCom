@@ -70,7 +70,7 @@ def konsult():
                                parse_mode=ParseMode.HTML, reply_markup=cancelButton)
 
     @dp.message_handler(state='*', commands='cancel')
-    @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
+    @dp.message_handler(Text(equals='Отмена', ignore_case=True), state='*')
     async def cancel(message: types.message, state: FSMContext):
         current_state = await state.get_state()
         if current_state is None:
@@ -102,8 +102,7 @@ def konsult():
                                                        md.text(f'_____'),
                                                        md.text('👨', f"<b> {(data['klient_message'])}</b>"),
                                                        sep='\n'))
-            await bot.send_message(CHANNEL_ID, md.text(
-                md.text(f'<b><a href="tg://user?id={callback.from_user.id}">{callback.from_user.first_name}</a></b>')))
+            await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
         await state.finish()
         await bot.send_message(callback.from_user.id,
                                f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>", reply_markup=keyboards.bt_sec)
@@ -132,7 +131,7 @@ async def post(message: types.Message):
 
 
 @dp.message_handler(state='*', commands='cancel')
-@dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
+@dp.message_handler(Text(equals='Отмена', ignore_case=True), state='*')
 async def cancel(message: types.message, state: FSMContext):
     current_state = await state.get_state()
     if current_state is None:
@@ -151,7 +150,7 @@ async def user_text(callback: types.callback_query, state: FSMContext):
     async with state.proxy() as data:
         data['klient_message'] = callback.text
 
-        await bot.send_message(-1001857114920,
+        await bot.send_message(CHANNEL_ID,
                                md.text(md.text('📩 <strong>ПОДДЕРЖКА</strong>'),
                                        md.text(''),
                                        md.text(
@@ -172,6 +171,7 @@ async def user_text(callback: types.callback_query, state: FSMContext):
                                            f"🆘\n<b>{data['klient_message']}</b>"),
                                        sep='\n'))
         await state.finish()
+        await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
         await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝",
                                reply_markup=keyboards.bt_sec)
         await asyncio.sleep(2)
@@ -252,7 +252,7 @@ _____
 1️⃣ Название компании 👇🏻''', reply_markup=cancelButton, parse_mode='HTML')
 
     @dp.message_handler(state='*', commands='cancel')
-    @dp.message_handler(Text(equals='отмена', ignore_case=True), state='*')
+    @dp.message_handler(Text(equals='Отмена', ignore_case=True), state='*')
     async def cancel(message: types.message, state: FSMContext):
         current_state = await state.get_state()
         if current_state is None:
@@ -396,7 +396,7 @@ _____''', reply_markup=keyboards.bt_sec)
                                                    md.text(f"🔥 <strong>{data['telephonia']}</strong>"),
                                                    sep='\n'), reply_markup=markup, parse_mode=ParseMode.HTML)
         await state.finish()
-        await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}")
+        await bot.send_message(CHANNEL_ID, f"@CHANNEL_ID, {callback.from_user.username}, {callback.from_user.id}")
         await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', parse_mode=ParseMode.HTML)
 
         try:
@@ -465,7 +465,8 @@ def form_new_mess():
                                                        md.text(
                                                            f"Сообщение от клиента:\n <strong>{data['ClientMess']}</strong>"),
                                                        sep='\n'), parse_mode=ParseMode.HTML)
-            await bot.send_message(CHANNEL_ID, f"@{message.from_user.username}")
+            await bot.send_message(CHANNEL_ID, f"@{message.from_user.username}, {message.from_user.id}")
+
             await state.finish()
             await bot.send_message(message.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝',
                                    parse_mode=ParseMode.HTML, reply_markup=keyboards.bt_sec)
