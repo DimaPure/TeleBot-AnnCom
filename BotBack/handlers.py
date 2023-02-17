@@ -63,7 +63,7 @@ async def start1(message: types.Message):
         timeN = now.strftime("%d/%m/%Y")
         connection = psycopg2.connect(database='for_bots',
                                       user='wisdom',
-                                      password='******',
+                                      password='vZSi#6j?X$',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
