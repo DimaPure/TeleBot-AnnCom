@@ -137,7 +137,12 @@ popUp.append(passwordForm);
 document.body.append(popUp);
 
 passwordForm.addEventListener("submit", () => {
-  if (passwordInput.value == 123) {
+  var pwdObj = document.getElementById("passwordInput");
+  var hashObj = new jsSHA("SHA-512", "TEXT", { numRounds: 1 });
+  hashObj.update(pwdObj.value);
+  var hash = hashObj.getHash("HEX");
+
+  if (hash == data_hash) {
     createFilter();
     createTable();
     popUp.remove();
