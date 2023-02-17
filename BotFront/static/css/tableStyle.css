@@ -9,6 +9,10 @@
   display: none;
 }
 
+#jsonHash {
+  display: none;
+}
+
 table {
   margin: 0 auto;
   border-collapse: collapse;

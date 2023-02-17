@@ -1,22 +1,3 @@
-const subscribers = [
-  {
-    registrationDate: "02.06.2022",
-    registrationTime: "22:20:00",
-    userID: "78523972",
-    firstName: "Карина",
-    lastName: "Трофимова",
-    username: "@nekashtanka",
-  },
-  {
-    registrationDate: "22.06.2022",
-    registrationTime: "00:20:00",
-    userID: "46930862",
-    firstName: "Николай",
-    lastName: "Николаев",
-    username: "@лох",
-  },
-];
-
 function createFilter() {
   const dateBox = document.createElement("div");
   dateBox.className = "dateBox";
@@ -155,8 +136,15 @@ passwordForm.append(passwordInput, confirmPassword);
 popUp.append(passwordForm);
 document.body.append(popUp);
 
+const data_hash = document.getElementById("jsonHash").innerHTML;
+
 passwordForm.addEventListener("submit", () => {
-  if (passwordInput.value == 123) {
+  var pwdObj = document.getElementById("passwordInput");
+  var hashObj = new jsSHA("SHA-512", "TEXT", { numRounds: 1 });
+  hashObj.update(pwdObj.value);
+  var hash = hashObj.getHash("HEX");
+
+  if (hash == data_hash) {
     createFilter();
     createTable();
     popUp.remove();
