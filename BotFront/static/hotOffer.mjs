@@ -294,10 +294,15 @@ function form() {
       let numph_py = phoneNumber.value;
       let time = today;
       let compan = company.value;
-      let crm = CRMName.value;
+      let crm = "-";
       let cardd = "Горячее предложение";
 
+<<<<<<< HEAD
+
+      fetch("/hotOffer", {
+=======
       fetch("/", {
+>>>>>>> a75b078123e97791471507be013b1f87c628fbd8
         headers: {
           "Content-Type": "application/json",
         },
