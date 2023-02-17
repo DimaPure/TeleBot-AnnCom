@@ -4,6 +4,7 @@
     rel="stylesheet"
     href="{{url_for('static', filename='css/tableStyle.css')}}"
   />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jsSHA/2.0.2/sha.js"></script>
   <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -13,6 +14,7 @@
   <body>
     <div id="json2">{{ jsonStr2 }}</div>
     <div id="json3">{{ jsonStr3 }}</div>
+    <div id="jsonHash">{{ jsonHash }}</div>
   </body>
   <script
     type="module"
