@@ -132,8 +132,8 @@ def withdrawDataBot_db():
             dict_list.append({
                 "company": str(row[0]),
                 "phone": str(row[1]),
-                "email": str(row[2]),
-                "name": str(row[3]),
+                "email": str(row[3]),
+                "name": str(row[2]),
                 "time": str(row[4]),
                 "username": str(row[5])
             })

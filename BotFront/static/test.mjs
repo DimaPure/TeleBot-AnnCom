@@ -515,7 +515,7 @@ function form(card) {
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      (validateEmail(email.value) || /\S/.test(email.value)) &&
+      (validateEmail(email.value) && /\S/.test(email.value)) &&
       /\S/.test(name.value) &&
       /\S/.test(numberOfPhones.value) &&
       politicChecbox.checked == true
@@ -600,7 +600,13 @@ function form(card) {
       let time = today;
       let compan = company.value;
       let crm = CRMName.value;
+      if (!CRMName.value) {
+        crm = "-";
+      }
       let cardd = card.name;
+      if (!card.name) {
+        cardd = "Индивидуальная коробка";
+      }
 
 
       fetch("/", {
@@ -769,7 +775,13 @@ function form(card) {
       let time = today;
       let compan = company.value;
       let crm = CRMName.value;
+      if (!CRMName.value) {
+        crm = "-";
+      }
       let cardd = card.name;
+      if (!card.name) {
+        cardd = "Индивидуальная коробка";
+      }
 
 
       fetch("/", {

@@ -71,7 +71,7 @@ async def start1(message: types.Message):
         connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
         # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
         # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
-        cursor.execute(f'''insert into FORM_BOTS (user_id, name, username, time)
+        cursor.execute(f'''insert into USERS (user_id, name, username, time)
                             values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}','{timeN}')
                               on conflict (user_id) do nothing''')
     except (Exception, Error) as error:

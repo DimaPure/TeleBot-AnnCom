@@ -236,7 +236,7 @@ function form() {
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      validateEmail(email.value) &&
+      (validateEmail(email.value) && /\S/.test(email.value)) &&
       /\S/.test(email.value) &&
       /\S/.test(name.value) &&
       politicChecbox.checked == true
@@ -297,12 +297,8 @@ function form() {
       let crm = "-";
       let cardd = "Горячее предложение";
 
-<<<<<<< HEAD
 
       fetch("/hotOffer", {
-=======
-      fetch("/", {
->>>>>>> a75b078123e97791471507be013b1f87c628fbd8
         headers: {
           "Content-Type": "application/json",
         },
