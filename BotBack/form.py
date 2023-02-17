@@ -13,8 +13,8 @@ from aiogram.types import InlineKeyboardMarkup, InputFile, ParseMode, \
 from aiogram.utils.exceptions import CantInitiateConversation
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-
-import keyboards
+from text_bt import link
+from keyboards import bt_sec
 
 from config import CHANNEL_ID
 
@@ -77,7 +77,7 @@ def konsult():
             return
 
         await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-    _____''', reply_markup=keyboards.bt_sec)
+    _____''', reply_markup=bt_sec)
 
         await state.finish()
         await asyncio.sleep(1)
@@ -105,7 +105,8 @@ def konsult():
             await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
         await state.finish()
         await bot.send_message(callback.from_user.id,
-                               f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>", reply_markup=keyboards.bt_sec)
+                               f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>",
+                               reply_markup=bt_sec)
         await asyncio.sleep(4)
         await main_menu(callback)
 
@@ -138,7 +139,7 @@ async def cancel(message: types.message, state: FSMContext):
         return
 
     await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-_____''', reply_markup=keyboards.bt_sec)
+_____''', reply_markup=bt_sec)
 
     await state.finish()
     await asyncio.sleep(1)
@@ -173,7 +174,7 @@ async def user_text(callback: types.callback_query, state: FSMContext):
         await state.finish()
         await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
         await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝",
-                               reply_markup=keyboards.bt_sec)
+                               reply_markup=bt_sec)
         await asyncio.sleep(2)
         await callback.delete()
         await main_menu(callback)
@@ -241,9 +242,10 @@ def form_colect():
         RobotType = State()
         PhoneSize = State()
         telephonia = State()
+        Confirm = State()
 
     @dp.callback_query_handler(text="robot")
-    async def robot(message: types.message, state: FSMContext):
+    async def robot(message: types.Message, state: FSMContext):
         button_cancel = InlineKeyboardButton('Отмена', callback_data='cancel')
         cancelButton = ReplyKeyboardMarkup(resize_keyboard=True).add(button_cancel)
         await Form.Company.set()
@@ -259,32 +261,30 @@ _____
             return
 
         await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-_____''', reply_markup=keyboards.bt_sec)
+_____''', reply_markup=bt_sec)
 
         await state.finish()
         await asyncio.sleep(1)
         await main_menu(message)
 
-
-
     @dp.message_handler(state=Form.Company)
-    async def client_company(message: types.message, state: FSMContext):
+    async def client_company(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['Company'] = message.text
 
         await Form.next()
-        await bot.send_message(message.from_user.id,'2️⃣ Номер телефона 👇🏻')
+        await bot.send_message(message.from_user.id, '2️⃣ Номер телефона 👇🏻')
 
     @dp.message_handler(state=Form.Phone)
-    async def client_phone(message: types.message, state: FSMContext):
+    async def client_phone(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['Phone'] = message.text
 
         await Form.next()
-        await bot.send_message(message.from_user.id,'3️⃣ Ваше Имя 👇🏻')
+        await bot.send_message(message.from_user.id, '3️⃣ Ваше Имя 👇🏻')
 
     @dp.message_handler(state=Form.ClientName)
-    async def client_name(message: types.message, state: FSMContext):
+    async def client_name(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['ClientName'] = message.text
 
@@ -292,7 +292,7 @@ _____''', reply_markup=keyboards.bt_sec)
         await bot.send_message(message.from_user.id, '4️⃣ Ваш E-mail 👇🏻')
 
     @dp.message_handler(state=Form.E_mail)
-    async def client_email(message: types.message, state: FSMContext):
+    async def client_email(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['E_mail'] = message.text
 
@@ -306,7 +306,7 @@ _____''', reply_markup=keyboards.bt_sec)
 
         await Form.next()
         await bot.send_message(message.from_user.id,
-    '''5️⃣ Какой тип робота вам нужен? Отправьте боту название 
+                               '''5️⃣ Какой тип робота вам нужен? Отправьте боту название 
     из списка ниже:
 
     ✓ Валидация / Фильтрация базы номеров
@@ -373,49 +373,82 @@ _____''', reply_markup=keyboards.bt_sec)
                 mass = 'телефония + робот'
             case _:
                 mass = callback.text
-
         async with state.proxy() as data:
             data['telephonia'] = mass
             markup = types.ReplyKeyboardRemove()
-        await bot.send_message(CHANNEL_ID, md.text(md.text('<strong>🤖СБОРКА</strong>\n'),
-                                                   md.text(f"<b>TG user id: {callback.from_user.id}</b>"),
-                                                   md.text(
-                                                       f"<b>TG first name: {callback.from_user.first_name}</b>"),
-                                                   md.text(f"<b>TG last name: {callback.from_user.last_name}</b>"),
-                                                   md.text(f"<b>TG username: {callback.from_user.username}</b>"),
-                                                   md.text(f'🗓<b>дата:{datetime.date.today()} </b>'),
-                                                   md.text(
-                                                       f'⏰<b>время:{datetime.datetime.now().strftime("%H:%M:%S")} </b>'),
-                                                   md.text('--------------'),
-                                                   md.text(f"🔥 <strong>{data['Company']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['Phone']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['ClientName']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['E_mail']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['RobotType']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['PhoneSize']}</strong>"),
-                                                   md.text(f"🔥 <strong>{data['telephonia']}</strong>"),
-                                                   sep='\n'), reply_markup=markup, parse_mode=ParseMode.HTML)
-        await state.finish()
-        await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
-        await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', parse_mode=ParseMode.HTML)
 
-        try:
-            connection = psycopg2.connect(  database='for_bots',
-                                            user='wisdom',
-                                            password='********',
-                                            host='localhost',
-                                            port='5432')
-            print('База подключена')
-            connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-            cursor = connection.cursor()
-            cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail) 
-               VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}')''')
-        except (Exception, Error) as error:
-            print('Ошибка при работе с PostgreSQL в форме', error)
-        finally:
-            if connection:
-                cursor.close()
-                connection.close()
+        keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
+        buttons = ["Согласен", "Нет"]
+        keyboard.add(*buttons)
+        await Form.next()
+        await bot.send_message(callback.from_user.id, f'''
+Бот собирает информацию для обратной связи и попросит оставить свои данные.
+Если Вы {link}, то нажмите кнопку "Согласен". 
+В противном случае, нажмите "Нет."''', reply_markup=keyboard, disable_web_page_preview=True)
+
+
+
+
+    @dp.message_handler(state=Form.Confirm)
+    async def confirm(callback: types.callback_query, state: FSMContext):
+        global connection, cursor
+        mass = ''
+        match callback.text:
+            case '1':
+                mass = "Согласен"
+            case '2':
+                mass = "Нет"
+            case _:
+                mass = callback.text
+        async with state.proxy() as data:
+            data['Confrim'] = mass
+
+        if (mass == "Согласен"):
+            await bot.send_message(CHANNEL_ID, md.text(md.text('<strong>🤖СБОРКА</strong>\n'),
+                                                       md.text(f"<b>TG user id: {callback.from_user.id}</b>"),
+                                                       md.text(
+                                                           f"<b>TG first name: {callback.from_user.first_name}</b>"),
+                                                       md.text(f"<b>TG last name: {callback.from_user.last_name}</b>"),
+                                                       md.text(f"<b>TG username: {callback.from_user.username}</b>"),
+                                                       md.text(f'🗓<b>дата:{datetime.date.today()} </b>'),
+                                                       md.text(
+                                                           f'⏰<b>время:{datetime.datetime.now().strftime("%H:%M:%S")} </b>'),
+                                                       md.text('--------------'),
+                                                       md.text(f"🔥 <strong>{data['Company']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['Phone']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['ClientName']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['E_mail']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['RobotType']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['PhoneSize']}</strong>"),
+                                                       md.text(f"🔥 <strong>{data['telephonia']}</strong>"),
+                                                       sep='\n'), parse_mode=ParseMode.HTML)
+            await state.finish()
+            await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
+            await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', reply_markup=bt_sec,
+                                   parse_mode=ParseMode.HTML)
+
+
+            # try:
+            #     connection = psycopg2.connect(database='for_bots',
+            #                                   user='wisdom',
+            #                                   password='********',
+            #                                   host='localhost',
+            #                                   port='5432')
+            #     print('База подключена')
+            #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+            #     cursor = connection.cursor()
+            #     cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail)
+            #                VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}')''')
+            # except(Exception, Error) as error:
+            #     print('Ошибка при работе с PostgreSQL в форме', error)
+            # finally:
+            #     if connection:
+            #         cursor.close()
+            #         connection.close()
+        else:
+            await bot.send_message(callback.from_user.id, f'''К сожалению, дальнейшее взаимодействие с Ботом невозможно 
+по причине вашего отказа от передачи своих данных.''', reply_markup=bt_sec)
+
 
         await asyncio.sleep(1)
         await main_menu(callback)
@@ -469,7 +502,7 @@ def form_new_mess():
 
             await state.finish()
             await bot.send_message(message.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝',
-                                   parse_mode=ParseMode.HTML, reply_markup=keyboards.bt_sec)
+                                   parse_mode=ParseMode.HTML, reply_markup=bt_sec)
             await asyncio.sleep(3)
             await main_menu(message)
 
