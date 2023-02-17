@@ -49,7 +49,10 @@ function createFilter() {
     document.body.prepend(backTTF);
 
     backTTF.addEventListener("click", () => {
-      window.location.href = "table.html";
+      const mainTable = document.querySelector(".mainTable");
+      mainTable.remove();
+      backTTF.remove();
+      createTable();
     });
 
     for (var i = 0; i < tr.length; i++) {
@@ -86,14 +89,14 @@ function createTable() {
   const timeRegHead = document.createElement("th");
   timeRegHead.textContent = "время РЕГ.";
 
-  const userEmail = document.createElement("th");
-  userEmail.textContent = "Email";
+  const userIdHead = document.createElement("th");
+  userIdHead.textContent = "User ID";
 
   const firstNameHead = document.createElement("th");
   firstNameHead.textContent = "TG (name)";
 
-  const userPhone = document.createElement("th");
-  userPhone.textContent = "Номер телефона";
+  const userNameHead = document.createElement("th");
+  userNameHead.textContent = "Username";
 
   // Данные юзеров
   const data_users = document.getElementById("json").innerHTML;
@@ -110,7 +113,7 @@ function createTable() {
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.registrationDate;
+    rowRegDate.textContent = subscriber.time;
 
     const rowTimeReg = document.createElement("td");
     rowTimeReg.textContent = subscriber.registrationTime;
@@ -118,54 +121,48 @@ function createTable() {
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;
 
-    const rowNumber = document.createElement("td");
-    rowNumber.textContent = subscriber.phone;
+    const rowUsername = document.createElement("td");
+    rowUsername.textContent = subscriber.user_name;
 
-    const rowEmail = document.createElement("td");
-    rowEmail.textContent = subscriber.email;
+    const rowUserId = document.createElement("td");
+    rowUserId.textContent = subscriber.user_id;
 
-    row.append(rowRegDate, rowTimeReg, rowFirstName, rowEmail, rowNumber);
+    row.append(rowRegDate, rowFirstName, rowUserId, rowUsername);
     tbody.append(row);
   }
 
-  mainTable.append(
-    regDateHead,
-    timeRegHead,
-    firstNameHead,
-    userEmail,
-    userPhone
-  );
+  mainTable.append(regDateHead, firstNameHead, userIdHead, userNameHead);
   mainTable.append(tbody);
   document.body.append(mainTable);
 }
 
-// const popUp = document.createElement("div");
-// popUp.className = "popUp";
+const popUp = document.createElement("div");
+popUp.className = "popUp";
 
-// const passwordForm = document.createElement("form");
-// passwordForm.className = "passwordForm";
+const passwordForm = document.createElement("form");
+passwordForm.className = "passwordForm";
 
-// const passwordInput = document.createElement("input");
-// passwordInput.id = "passwordInput";
-// passwordInput.placeholder = "Введите пароль..";
-// passwordInput.type = "number";
+const passwordInput = document.createElement("input");
+passwordInput.id = "passwordInput";
+passwordInput.placeholder = "Введите пароль..";
+passwordInput.type = "number";
 
-// const confirmPassword = document.createElement("button");
-// confirmPassword.id = "confirmPassword";
-// confirmPassword.textContent = "Подтвердить";
+const confirmPassword = document.createElement("button");
+confirmPassword.id = "confirmPassword";
+confirmPassword.textContent = "Подтвердить";
 
-// passwordForm.append(passwordInput, confirmPassword);
-// popUp.append(passwordForm);
-// document.body.append(popUp);
+passwordForm.append(passwordInput, confirmPassword);
+popUp.append(passwordForm);
+document.body.append(popUp);
 
-// passwordForm.addEventListener("submit", () => {
-//   if (passwordInput.value == 123) {
-//     createFilter();
+passwordForm.addEventListener("submit", () => {
+  if (passwordInput.value == 123) {
+    createFilter();
+    createTable();
+    popUp.remove();
+  }
+});
 
-//     popUp.remove();
-//   }
-// });
-createTable();
 var getCellValue = function (tr, idx) {
   return tr.children[idx].innerText || tr.children[idx].textContent;
 };

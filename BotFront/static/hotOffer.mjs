@@ -146,7 +146,23 @@ function form() {
     telephony.append(telLabel);
   }
 
+  const politicForm = document.createElement("div");
+  politicForm.className = "form-div checkbox";
+  const politicChecbox = document.createElement("input");
+  politicChecbox.type = "checkbox";
+  politicChecbox.id = "politicCheckbox";
+  const politicLabel = document.createElement("label");
+  politicChecbox.for = "politicCheckbox";
+  politicLabel.textContent =
+    "Я ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ";
+
+  politicForm.append(politicChecbox, politicLabel);
+
   checkout.addEventListener("click", function (e) {
+    if (document.getElementById("politicError")) {
+      const politicErr = document.getElementById("politicError");
+      politicErr.remove();
+    }
     if (document.getElementById("companyErr")) {
       const companyErr = document.getElementById("companyErr");
       companyErr.remove();
@@ -211,14 +227,20 @@ function form() {
       name.id = "nameError";
       nameForm.append(nameErr);
     }
+    if (politicChecbox.checked != true) {
+      const politicErr = document.createElement("label");
+      politicErr.textContent = ` \r\n *НЕОБХОДИМО ПРИНЯТЬ УСЛОВИЯ ПОЛИТИКИ`;
+      politicErr.id = "politicError";
+      politicForm.appendChild(politicErr);
+    }
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      validateEmail(email.value) &&
+      (validateEmail(email.value) && /\S/.test(email.value)) &&
       /\S/.test(email.value) &&
-      /\S/.test(name.value)
-    ) 
-    {
+      /\S/.test(name.value) &&
+      politicChecbox.checked == true
+    ) {
       // ---------------------------- отправка axios --------------------------------------------
       const TOKEN = "5800428906:AAEL2KCZC4TVh2MRTP8zAj7bZHmYnieHLgU";
       const CHAT_ID = "-1001857114920";
@@ -259,38 +281,51 @@ function form() {
           console.warn(err);
         });
       // -----------------------------------------------------------------------------
-      
+
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+      var yyyy = today.getFullYear();
+      today = mm + "/" + dd + "/" + yyyy;
+
       let name_py = name.value;
       let email_py = email.value;
       let numph_py = phoneNumber.value;
+      let time = today;
+      let compan = company.value;
+      let crm = "-";
+      let cardd = "Горячее предложение";
 
-      fetch('/hotOffer', {
-          headers : {
-              'Content-Type' : 'application/json'
-          },
-          method : 'POST',
-          body : JSON.stringify( {
-              name_py,
-              email_py,
-              numph_py
-          })
-      })
-      .then(function (response){
 
-          if(response.ok) {
-              console.log("Данные отправлены и получены")
-          }
-          else {
-              throw Error('Что - то пошло не так!');
-          }
+      fetch("/hotOffer", {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify({
+          name_py,
+          email_py,
+          numph_py,
+          time,
+          compan,
+          crm,
+          cardd,
+        }),
       })
-      .catch(function(error) {
+        .then(function (response) {
+          if (response.ok) {
+            console.log("Данные отправлены и получены");
+          } else {
+            throw Error("Что - то пошло не так!");
+          }
+        })
+        .catch(function (error) {
           console.log(error);
-      });
-     //-----------------------------------------------------------------------------------------------------------------------------------------
+        });
+      //-----------------------------------------------------------------------------------------------------------------------------------------
 
-      setTimeout(()=>{
+      setTimeout(() => {
         main();
       }, 3000);
     }
@@ -298,7 +333,14 @@ function form() {
 
   telephonyForm.append(telephonyDescription, telephony);
 
-  form.append(companyForm, phoneNumberForm, nameForm, emailForm, telephonyForm);
+  form.append(
+    companyForm,
+    phoneNumberForm,
+    nameForm,
+    emailForm,
+    telephonyForm,
+    politicForm
+  );
 
   mainBox.append(boxButton, form, boxButtonCheckout);
   document.body.append(mainBox);

@@ -515,7 +515,7 @@ function form(card) {
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      (validateEmail(email.value) || /\S/.test(email.value)) &&
+      (validateEmail(email.value) && /\S/.test(email.value)) &&
       /\S/.test(name.value) &&
       /\S/.test(numberOfPhones.value) &&
       politicChecbox.checked == true
@@ -588,9 +588,26 @@ function form(card) {
       //-----------------------------------------------------------------------------------------------------------------------------------------
 
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = mm + '/' + dd + '/' + yyyy;
+
       let name_py = name.value;
       let email_py = email.value;
       let numph_py = phoneNumber.value;
+      let time = today;
+      let compan = company.value;
+      let crm = CRMName.value;
+      if (!CRMName.value) {
+        crm = "-";
+      }
+      let cardd = card.name;
+      if (!card.name) {
+        cardd = "Индивидуальная коробка";
+      }
+
 
       fetch("/", {
         headers: {
@@ -601,6 +618,10 @@ function form(card) {
           name_py,
           email_py,
           numph_py,
+          time,
+          compan,
+          crm,
+          cardd
         }),
       })
         .then(function (response) {
@@ -742,9 +763,26 @@ function form(card) {
       //-----------------------------------------------------------------------------------------------------------------------------------------------
 
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
+      var today = new Date();
+      var dd = String(today.getDate()).padStart(2, '0');
+      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var yyyy = today.getFullYear();
+      today = mm + '/' + dd + '/' + yyyy;
+
       let name_py = name.value;
       let email_py = email.value;
       let numph_py = phoneNumber.value;
+      let time = today;
+      let compan = company.value;
+      let crm = CRMName.value;
+      if (!CRMName.value) {
+        crm = "-";
+      }
+      let cardd = card.name;
+      if (!card.name) {
+        cardd = "Индивидуальная коробка";
+      }
+
 
       fetch("/", {
         headers: {
@@ -755,6 +793,10 @@ function form(card) {
           name_py,
           email_py,
           numph_py,
+          time,
+          compan,
+          crm,
+          cardd
         }),
       })
         .then(function (response) {
