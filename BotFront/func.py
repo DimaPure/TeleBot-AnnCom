@@ -1,11 +1,10 @@
-from flask import Flask, render_template, url_for, request
+from flask import request
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-import json
-import ast
 
 
+# Отправка данных в бд
 def push_bd():
     if request.method == "POST":
         jsonData = request.get_json()
@@ -19,9 +18,9 @@ def push_bd():
         print(val1, val2, val3, val4, val5, val6, val7)
 
         try:
-            connection = psycopg2.connect(database='BOT',
-                                          user='postgres',
-                                          password='CHISTOHIN025134',
+            connection = psycopg2.connect(database='for_bots',
+                                          user='wisdom',
+                                          password='vZSi#6j?X$',
                                           host='localhost',
                                           port='5432')
             print('База подключена')
@@ -138,6 +137,32 @@ def withdrawDataBot_db():
                 "username": str(row[5])
             })
         return dict_list
+
+    except (Exception, Error) as error:
+        print('Ошибка при работе с PostgreSQL', error)
+    finally:
+        if connection == True:
+            cursor.close()
+            connection.close()
+
+
+# Ключ
+def withdrawKey_db():
+    try:
+        connection = psycopg2.connect(database='for_bots',
+                                      user='wisdom',
+                                      password='vZSi#6j?X$',
+                                      host='localhost',
+                                      port='5432')
+        print('База подключена')
+
+        cursor = connection.cursor()
+        postgreSQL_select_Query = "select key from safe"
+
+        cursor.execute(postgreSQL_select_Query)
+        key = str(cursor.fetchone())
+        key = key[2:130]
+        return key
 
     except (Exception, Error) as error:
         print('Ошибка при работе с PostgreSQL', error)

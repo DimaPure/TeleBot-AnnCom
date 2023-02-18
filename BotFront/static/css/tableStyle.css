@@ -1,11 +1,4 @@
-#json {
-  display: none;
-}
-#json2 {
-  display: none;
-}
-
-#json3 {
+#json, #json2, #json3, #jsonHash {
   display: none;
 }
 
