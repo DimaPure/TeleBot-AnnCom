@@ -126,7 +126,7 @@ passwordForm.className = "passwordForm";
 const passwordInput = document.createElement("input");
 passwordInput.id = "passwordInput";
 passwordInput.placeholder = "Введите пароль..";
-passwordInput.type = "number";
+passwordInput.type = "password";
 
 const confirmPassword = document.createElement("button");
 confirmPassword.id = "confirmPassword";
@@ -184,4 +184,3 @@ Array.prototype.slice
         });
     });
   });
-
