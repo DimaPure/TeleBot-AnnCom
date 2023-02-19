@@ -1,13 +1,14 @@
 import asyncio
 import time
 import datetime
+from contextlib import suppress
 
 import psycopg2
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InputFile, WebAppInfo
 from aiogram.utils import executor
-from aiogram.utils.exceptions import CantInitiateConversation
+from aiogram.utils.exceptions import CantInitiateConversation, MessageCantBeDeleted, MessageToDeleteNotFound
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -64,7 +65,7 @@ async def process_hi1_command(message: types.Message):
     #         connection.close()
 
     await asyncio.sleep(2)
-    await main_menu(message)
+    # await main_menu(message)
 
 
 # -----------------------📝|Предложить пост в канал--------------------------
@@ -148,6 +149,7 @@ async def main_menu(message: types.Message):
  ✓ лидогенерация и многое другое…
  _____
  {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
+    await delete_message(message=message.message_id)
 
 
 # ----------- Form Консультация ------------
@@ -225,3 +227,12 @@ async def admin_reply(message: types.Message):
         await bot.send_message(uid, "<strong>⚠Ответ от администратора: </strong>" + message.text)
     except CantInitiateConversation:
         await bot.reply("Ошибка\n")
+
+
+async def delete_message(message: types.Message, sleep_time: int = 0):
+    await asyncio.sleep(sleep_time)
+    with suppress(MessageCantBeDeleted, MessageToDeleteNotFound):
+        await message.delete()
+
+
+
