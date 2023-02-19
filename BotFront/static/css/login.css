@@ -61,6 +61,12 @@ input {
   border-radius: 0.5em;
   background-color: rgba(50, 70, 255, 0.966);
 }
+
+select {
+  background-color: bisque;
+  border-radius: 5px;
+}
+
 @media (max-width: 1400px) {
   input.but {
     font-size: 10px;
