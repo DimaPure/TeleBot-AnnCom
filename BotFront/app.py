@@ -1,12 +1,6 @@
-from flask import Flask, render_template, url_for, request
-import psycopg2
-from psycopg2 import Error
-from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-import json
-import ast
-from flask import jsonify
+from flask import Flask, render_template, redirect
 from func import *
-import requests
+from flask import Flask, request, render_template
 
 # creates an application that is named after the name of the file
 app = Flask(__name__, static_url_path="")
@@ -25,24 +19,48 @@ def get_Hot():
     return render_template('hotOffer.html')
 
 
-# Переход на админскую страничку
-@app.route('/admin_users', methods=['POST', 'GET'])
-def get_table():
-    data_push = withdrawUsers_db()
-    print(data_push)
-    return render_template('table.html', jsonStr=data_push)
-
-
 @app.route('/admin_data', methods=['POST', 'GET'])
-def get_tableBox():
-    data_push = withdrawDataSite_db()
-    data_push2 = withdrawDataBot_db()
-    print(data_push, data_push2)
-    return render_template('tableBox.html',
-                           jsonStr2=data_push,
-                           jsonStr3=data_push2)
+def login_data():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        dataAdmin = withdrawDataAdmin_db()
+        userdb = dataAdmin[1]
+        hashDB = dataAdmin[0]
+
+        if check_password(hashDB, password) and username == userdb:
+            data_push1 = withdrawDataSite_db()
+            data_push2 = withdrawDataBot_db()
+            return render_template('tableBox.html',
+                                   jsonStrSite=data_push1,
+                                   jsonStrBot=data_push2)
+        else:
+            error = "Попробуйте ещё раз, не все данные верны"
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
 
 
-# if running this module as a standalone program (cf. command in the Python Dockerfile)
+@app.route('/admin_users', methods=['POST', 'GET'])
+def login_users():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        dataAdmin = withdrawDataAdmin_db()
+        userdb = dataAdmin[1]
+        hashDB = dataAdmin[0]
+
+        if check_password(hashDB, password) and username == userdb:
+            data_push = withdrawUsers_db()
+            return render_template('table.html', jsonStrUsers=data_push)
+        else:
+            error = "Попробуйте ещё раз, не все данные верны"
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port="5000", debug=True)
+    app.run(host="0.0.0.0", port="5000", debug=False)

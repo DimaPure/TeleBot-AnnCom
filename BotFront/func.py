@@ -1,11 +1,11 @@
-from flask import Flask, render_template, url_for, request
+from flask import request
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-import json
-import ast
+from werkzeug.security import check_password_hash
 
 
+# Отправка данных в бд
 def push_bd():
     if request.method == "POST":
         jsonData = request.get_json()
@@ -19,9 +19,9 @@ def push_bd():
         print(val1, val2, val3, val4, val5, val6, val7)
 
         try:
-            connection = psycopg2.connect(database='BOT',
-                                          user='postgres',
-                                          password='CHISTOHIN025134',
+            connection = psycopg2.connect(database='for_bots',
+                                          user='wisdom',
+                                          password='vZSi#6j?X$',
                                           host='localhost',
                                           port='5432')
             print('База подключена')
@@ -43,9 +43,9 @@ def push_bd():
 # Выгрузка юзеров
 def withdrawUsers_db():
     try:
-        connection = psycopg2.connect(database='for_bots',
-                                      user='wisdom',
-                                      password='vZSi#6j?X$',
+        connection = psycopg2.connect(database='BOT',
+                                      user='postgres',
+                                      password='CHISTOHIN025134',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -77,9 +77,9 @@ def withdrawUsers_db():
 # Выгрузка данных с сайта
 def withdrawDataSite_db():
     try:
-        connection = psycopg2.connect(database='for_bots',
-                                      user='wisdom',
-                                      password='vZSi#6j?X$',
+        connection = psycopg2.connect(database='BOT',
+                                      user='postgres',
+                                      password='CHISTOHIN025134',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -114,9 +114,9 @@ def withdrawDataSite_db():
 # Выгрузка данных из Бота
 def withdrawDataBot_db():
     try:
-        connection = psycopg2.connect(database='for_bots',
-                                      user='wisdom',
-                                      password='vZSi#6j?X$',
+        connection = psycopg2.connect(database='BOT',
+                                      user='postgres',
+                                      password='CHISTOHIN025134',
                                       host='localhost',
                                       port='5432')
         print('База подключена')
@@ -145,3 +145,39 @@ def withdrawDataBot_db():
         if connection == True:
             cursor.close()
             connection.close()
+
+
+def withdrawDataAdmin_db():
+    try:
+        connection = psycopg2.connect(database='BOT',
+                                      user='postgres',
+                                      password='CHISTOHIN025134',
+                                      host='localhost',
+                                      port='5432')
+        print('База подключена')
+
+        cursor = connection.cursor()
+        postgreSQL_select_Query = "select * from safe"
+
+        cursor.execute(postgreSQL_select_Query)
+        table_users = cursor.fetchall()
+
+        dataAd = []
+        for row in table_users:
+            dataAd.append(str(row[0]))
+            dataAd.append(str(row[1]))
+        return dataAd
+
+    except (Exception, Error) as error:
+        print('Ошибка при работе с PostgreSQL', error)
+    finally:
+        if connection == True:
+            cursor.close()
+            connection.close()
+
+
+def check_password(pasHash, password):
+    return check_password_hash(pasHash, password)
+
+
+#Авторизация админа----------------------------------------------------------------------------------------------------

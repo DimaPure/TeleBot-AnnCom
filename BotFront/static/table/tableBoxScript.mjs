@@ -301,29 +301,5 @@ function createDataBot(data) {
   }
 }
 
-const popUp = document.createElement("div");
-popUp.className = "popUp";
-
-const passwordForm = document.createElement("form");
-passwordForm.className = "passwordForm";
-
-const passwordInput = document.createElement("input");
-passwordInput.id = "passwordInput";
-passwordInput.placeholder = "Введите пароль..";
-passwordInput.type = "number";
-
-const confirmPassword = document.createElement("button");
-confirmPassword.id = "confirmPassword";
-confirmPassword.textContent = "Подтвердить";
-
-passwordForm.append(passwordInput, confirmPassword);
-popUp.append(passwordForm);
-document.body.append(popUp);
-
-passwordForm.addEventListener("submit", () => {
-  if (passwordInput.value == 123) {
-    createFilter();
-    createTable();
-    popUp.remove();
-  }
-});
+createFilter();
+createTable();
