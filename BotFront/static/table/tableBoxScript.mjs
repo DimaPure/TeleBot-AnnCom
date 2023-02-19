@@ -301,36 +301,5 @@ function createDataBot(data) {
   }
 }
 
-const popUp = document.createElement("div");
-popUp.className = "popUp";
-
-const passwordForm = document.createElement("form");
-passwordForm.className = "passwordForm";
-
-const passwordInput = document.createElement("input");
-passwordInput.id = "passwordInput";
-passwordInput.placeholder = "Введите пароль..";
-passwordInput.type = "password";
-
-const confirmPassword = document.createElement("button");
-confirmPassword.id = "confirmPassword";
-confirmPassword.textContent = "Подтвердить";
-
-passwordForm.append(passwordInput, confirmPassword);
-popUp.append(passwordForm);
-document.body.append(popUp);
-
-const data_hash = document.getElementById("jsonHash").innerHTML;
-
-passwordForm.addEventListener("submit", () => {
-  var pwdObj = document.getElementById("passwordInput");
-  var hashObj = new jsSHA("SHA-512", "TEXT", { numRounds: 1 });
-  hashObj.update(pwdObj.value);
-  var hash = hashObj.getHash("HEX");
-
-  if (hash == data_hash) {
-    createFilter();
-    createTable();
-    popUp.remove();
-  }
-});
+createFilter();
+createTable();
