@@ -1,4 +1,5 @@
-body, html {
+body,
+html {
   width: 100%;
   height: 100vh;
   display: flex;
@@ -17,7 +18,7 @@ body, html {
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  background-color: aquamarine;
+  background-color: rgba(51, 146, 255, 0.589);
   font-weight: bold;
 }
 label {
@@ -48,31 +49,29 @@ input.pol {
   height: 30px;
   background-color: bisque;
 }
-input.but{
-    width: 90px;
-    height: 35px;
-    background-color: black;
-    color: #fff;
-    font-weight: bold;
-    margin-top: 30px;
-
+input.but {
+  width: 90px;
+  height: 35px;
+  background-color: rgb(50, 70, 255);
+  color: #fff;
+  font-weight: bold;
+  margin-top: 30px;
 }
 input {
   border-radius: 0.5em;
-  border: 1px solid rgba(0, 0, 0, 0.781);
+  background-color: rgba(50, 70, 255, 0.966);
 }
 @media (max-width: 1400px) {
-  
-  input.but{
+  input.but {
     font-size: 10px;
   }
-  input.pol{
+  input.pol {
     width: 80%;
   }
 }
 
 @media (max-width: 980px) {
-  input.but{
+  input.but {
     font-size: 10px;
   }
   label {
@@ -81,10 +80,10 @@ input {
 }
 
 @media (max-width: 640px) {
-  input.but{
+  input.but {
     font-size: 10px;
   }
-  input.pol{
+  input.pol {
     width: 60%;
   }
   .container {

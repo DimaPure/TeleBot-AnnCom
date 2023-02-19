@@ -1,4 +1,7 @@
-#json, #json2, #json3, #jsonHash {
+#json,
+#json2,
+#json3,
+#jsonHash {
   display: none;
 }
 
@@ -15,22 +18,21 @@ th {
   padding: 10px 20px;
   border: 1px solid #000;
   cursor: pointer;
-  background-color: aquamarine;
+  background-color: rgba(0, 47, 255, 0.568);
   font-weight: bold;
 }
 
 td {
   padding: 10px 20px;
   border: 1px solid #000;
-  background-color: rgba(127, 255, 212, 0.247);
 }
 
 tr:hover {
-  background-color: rgba(127, 255, 212, 0.589);
+  background-color: rgba(51, 146, 255, 0.589);
 }
 
 button {
-  background-color: rgb(34, 230, 164);
+  background-color: rgba(50, 70, 255, 0.966);
   color: white;
   border: none;
   border-radius: 10px;
