@@ -1,13 +1,14 @@
 import asyncio
 import time
 import datetime
+from contextlib import suppress
 
 import psycopg2
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import InlineKeyboardMarkup, InputFile, WebAppInfo
 from aiogram.utils import executor
-from aiogram.utils.exceptions import CantInitiateConversation
+from aiogram.utils.exceptions import CantInitiateConversation, MessageCantBeDeleted, MessageToDeleteNotFound
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
 
@@ -15,7 +16,7 @@ import keyboards
 from form import form_colect, form_new_mess, konsult, post
 from keyboards import bt_sec
 from main import bot, dp
-from text_bt import bot_inf, comp, cont, ex
+from text_bt import bot_inf, comp, cont, ex, link
 
 hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
@@ -24,24 +25,7 @@ index = "https://tgtest.sahome.ru/"
 # -------------------Приветствие-------------------------
 @dp.message_handler(commands=['start'])
 async def process_hi1_command(message: types.Message):
-    keyboard = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    buttons = ["Согласен", "Нет"]
-    keyboard.add(*buttons)
-    await message.reply(f'''Бот будет собирать пользовательскую информацию.
-Если Вы ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ, то нажмите кнопку "Согласен". 
-В противном случае, нажмите "Нет".''', reply_markup=keyboard)
-
-
-@dp.message_handler(lambda message: message.text == "Нет")
-async def exit(message: types.Message):
-    await message.reply(f'''К сожалению, пользоваться Ботом у Вас не получится:(''')
-    time.sleep(1)
-    await message.reply(f'''Всего доброго. Возвращайтесь, когда будете готовы предоставить данные!''')
-
-
-
-@dp.message_handler(lambda message: message.text == "Согласен")
-async def start1(message: types.Message):
+    global connection, cursor
     await message.answer(f'''🤖 Автодайлер «Бот N.»
       Голосовой робот-помощник для бизнеса
 
@@ -58,32 +42,30 @@ async def start1(message: types.Message):
     _____
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', reply_markup=bt_sec)
 
-    try:
-        now = datetime.datetime.now()
-        timeN = now.strftime("%d/%m/%Y")
-        connection = psycopg2.connect(database='for_bots',
-                                      user='wisdom',
-                                      password='vZSi#6j?X$',
-                                      host='localhost',
-                                      port='5432')
-        print('База подключена')
-        cursor = connection.cursor()
-        connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-        # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
-        # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
-        cursor.execute(f'''insert into USERS (user_id, name, username, time)
-                            values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}','{timeN}')
-                              on conflict (user_id) do nothing''')
-    except (Exception, Error) as error:
-        print('Ошибка при работе с PostgreSQL', error)
-
-    finally:
-        if connection:
-            cursor.close()
-            connection.close()
+    # try:
+    #     connection = psycopg2.connect(database='for_bots',
+    #                                   user='wisdom',
+    #                                   password='******',
+    #                                   host='localhost',
+    #                                   port='5432')
+    #     print('База подключена')
+    #     cursor = connection.cursor()
+    #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+    #     # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
+    #     # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
+    #     cursor.execute(f'''insert into FORM_BOTS (user_id, name, username)
+    #                         values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}')
+    #                           on conflict (user_id) do nothing''')
+    # except (Exception, Error) as error:
+    #     print('Ошибка при работе с PostgreSQL', error)
+    #
+    # finally:
+    #     if connection:
+    #         cursor.close()
+    #         connection.close()
 
     await asyncio.sleep(2)
-    await main_menu(message)
+    # await main_menu(message)
 
 
 # -----------------------📝|Предложить пост в канал--------------------------
@@ -167,6 +149,7 @@ async def main_menu(message: types.Message):
  ✓ лидогенерация и многое другое…
  _____
  {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
+    await delete_message(message=message.message_id)
 
 
 # ----------- Form Консультация ------------
@@ -235,6 +218,8 @@ async def admin_reply(message: types.Message):
     #     return
     # if message.reply_to_message.text.split('\n')[0] not in keyboards.vturmu:
     #     return
+    if not message.reply_to_message.text.__contains__(", "):
+        return
 
     # Парсим id из сообщения
     uid = message.reply_to_message.text.split(", ")[1]
@@ -242,3 +227,12 @@ async def admin_reply(message: types.Message):
         await bot.send_message(uid, "<strong>⚠Ответ от администратора: </strong>" + message.text)
     except CantInitiateConversation:
         await bot.reply("Ошибка\n")
+
+
+async def delete_message(message: types.Message, sleep_time: int = 0):
+    await asyncio.sleep(sleep_time)
+    with suppress(MessageCantBeDeleted, MessageToDeleteNotFound):
+        await message.delete()
+
+
+
