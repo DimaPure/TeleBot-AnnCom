@@ -20,7 +20,7 @@ def get_Hot():
 
 
 @app.route('/admin_data', methods=['POST', 'GET'])
-def login_ad():
+def login_data():
     if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
@@ -32,11 +32,29 @@ def login_ad():
         if check_password(hashDB, password) and username == userdb:
             data_push1 = withdrawDataSite_db()
             data_push2 = withdrawDataBot_db()
-            data_push3 = withdrawUsers_db()
             return render_template('tableBox.html',
-                                   jsonStr1=data_push1,
-                                   jsonStr2=data_push2,
-                                   jsonStr3=data_push3)
+                                   jsonStrSite=data_push1,
+                                   jsonStrBot=data_push2)
+        else:
+            error = "Попробуйте ещё раз, не все данные верны"
+            return render_template('login.html', error=error)
+
+    return render_template('login.html')
+
+
+@app.route('/admin_users', methods=['POST', 'GET'])
+def login_users():
+    if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        dataAdmin = withdrawDataAdmin_db()
+        userdb = dataAdmin[1]
+        hashDB = dataAdmin[0]
+
+        if check_password(hashDB, password) and username == userdb:
+            data_push = withdrawUsers_db()
+            return render_template('table.html', jsonStrUsers=data_push)
         else:
             error = "Попробуйте ещё раз, не все данные верны"
             return render_template('login.html', error=error)
