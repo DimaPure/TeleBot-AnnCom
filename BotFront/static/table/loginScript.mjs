@@ -1,6 +1,6 @@
 const selectTable = document.getElementById("tableSelect").value;
 let body = 0;
-console.log(selectTable);
+
 if (selectTable == "Пользователи, зашедшие в бота") {
   body = 1;
 }
