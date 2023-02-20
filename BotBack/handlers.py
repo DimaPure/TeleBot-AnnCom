@@ -44,11 +44,11 @@ async def process_hi1_command(message: types.Message):
     # try:
     #     now = datetime.datetime.now()
     #     timeN = now.strftime("%d/%m/%Y")
-    #     connection = psycopg2.connect(database='for_bots',
-    #                                   user='wisdom',
-    #                                   password='vZSi#6j?X$',
-    #                                   host='localhost',
-    #                                   port='5432')
+    #     connection = psycopg2.connect(database='BOT',
+                                    #   user='postgres',
+                                    #   password='CHISTOHIN025134',
+                                    #   host='localhost',
+                                    #   port='5432')
     #     print('База подключена')
     #     cursor = connection.cursor()
     #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)

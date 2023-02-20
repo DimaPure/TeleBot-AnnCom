@@ -19,9 +19,9 @@ def push_bd():
         print(val1, val2, val3, val4, val5, val6, val7)
 
         try:
-            connection = psycopg2.connect(database='for_bots',
-                                          user='wisdom',
-                                          password='vZSi#6j?X$',
+            connection = psycopg2.connect(database='BOT',
+                                          user='postgres',
+                                          password='CHISTOHIN025134',
                                           host='localhost',
                                           port='5432')
             print('База подключена')
