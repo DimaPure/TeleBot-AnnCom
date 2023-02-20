@@ -2,6 +2,7 @@ import asyncio
 import datetime
 import time
 
+from aiogram.utils.exceptions import MessageToDeleteNotFound
 import aiogram.utils.markdown as md
 import psycopg2
 from aiogram import types
@@ -52,10 +53,13 @@ async def main_menu(message: types.Message):
     ✓ лидогенерация и многое другое…
     _____
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
+    try:
+        await bot.delete_message(message.chat.id, message.message_id)
+    except (Exception, Error, AttributeError):
+                print('Нужные сообщеньки стёрлись')
 
 
-# -------------------------------------------------------------------- Консультация
-# ----------------------------------------------------------------------
+# ----------------- Консультация------------------------
 def konsult():
     class FormKonsult(StatesGroup):
         klient_message = State()
@@ -76,11 +80,10 @@ def konsult():
         if current_state is None:
             return
 
+        await state.finish()
         await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
     _____''', reply_markup=bt_sec)
-
-        await state.finish()
-        await asyncio.sleep(1)
+     
         await main_menu(message)
 
     @dp.message_handler(state=FormKonsult.klient_message)
@@ -107,7 +110,8 @@ def konsult():
         await bot.send_message(callback.from_user.id,
                                f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>",
                                reply_markup=bt_sec)
-        await asyncio.sleep(4)
+        await asyncio.sleep(2)
+        await bot.delete_message(callback.chat.id, callback.message_id-1)
         await main_menu(callback)
 
 
@@ -142,8 +146,12 @@ async def cancel(message: types.message, state: FSMContext):
 _____''', reply_markup=bt_sec)
 
     await state.finish()
-    await asyncio.sleep(1)
     await main_menu(message)
+    try:    
+            for delit in range(1,20):
+                await bot.delete_message(message.chat.id, message.message_id-delit)
+    except (Exception, Error, MessageToDeleteNotFound):
+            print('Нужные сообщеньки стёрлись')
 
 
 @dp.message_handler(state=FormSos.message_bot)
@@ -173,11 +181,16 @@ async def user_text(callback: types.callback_query, state: FSMContext):
                                        sep='\n'))
         await state.finish()
         await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
+        await asyncio.sleep(2)
         await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝",
                                reply_markup=bt_sec)
-        await asyncio.sleep(2)
-        await callback.delete()
+        await asyncio.sleep(1)
         await main_menu(callback)
+        try:    
+            for delit in range(1,3):
+                await bot.delete_message(callback.chat.id, callback.message_id-delit)
+        except (Exception, Error, MessageToDeleteNotFound):
+            print('Нужные сообщеньки стёрлись')
 
 
 # ---------------------------------------------------------------------------------------------------------
@@ -191,9 +204,9 @@ def post():
         await callback.answer('Кнопка не работает')
         await asyncio.sleep(3)
         await main_menu(callback)
-    #     await FormPost.klient_post.set()
-    #     await callback.answer(f'{callback.from_user.username}, введите сообщение, которое хотите предложить.')
-    #     await callback.delete()
+        await FormPost.klient_post.set()
+        await callback.answer(f'{callback.from_user.username}, введите сообщение, которое хотите предложить.')
+        await callback.delete()
     #
     # @dp.message_handler(state=FormPost.klient_post, content_types=types.ContentTypes.TEXT)
     # async def post_kl(call: types.callback_query, state: FSMContext):
@@ -275,6 +288,7 @@ _____''', reply_markup=bt_sec)
         await Form.next()
         await bot.send_message(message.from_user.id, '2️⃣ Номер телефона 👇🏻')
 
+
     @dp.message_handler(state=Form.Phone)
     async def client_phone(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
@@ -319,6 +333,7 @@ _____''', reply_markup=bt_sec)
 
     ⚠️ Нажмите кнопку или напишите текстом, какие типы 
      робота Вас интересуют 👇🏻''', reply_markup=kb_form)
+
 
     @dp.callback_query_handler(text_contains='', state=Form.RobotType)
     async def client_robot_type(callback_query: types.callback_query, state: FSMContext):
@@ -426,20 +441,30 @@ _____''', reply_markup=bt_sec)
             await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
             await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', reply_markup=bt_sec,
                                    parse_mode=ParseMode.HTML)
-
+            await asyncio.sleep(2)
+            await main_menu(callback)
+            try:
+                for delit in range(1,20):
+                    await bot.delete_message(callback.chat.id, callback.message_id-delit)
+            except (Exception, Error, MessageToDeleteNotFound):
+                print('Нужные сообщеньки стёрлись')
 
             # try:
-            #     connection = psycopg2.connect(database='for_bots',
-            #                                   user='wisdom',
-            #                                   password='********',
-            #                                   host='localhost',
-            #                                   port='5432')
+            # Дата
+            #     now = datetime.datetime.now()
+            #     timeN = now.strftime("%d/%m/%Y")
+
+            #     connection = psycopg2.connect(  database='for_bots',
+            #                             user='wisdom',
+            #                             password='vZSi#6j?X$',
+            #                             host='localhost',
+            #                             port='5432')
             #     print('База подключена')
             #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
             #     cursor = connection.cursor()
-            #     cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail)
-            #                VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}')''')
-            # except(Exception, Error) as error:
+            #     cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time, username) 
+            #     VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}','{callback.from_user.username}')''')
+            # except (Exception, Error) as error:
             #     print('Ошибка при работе с PostgreSQL в форме', error)
             # finally:
             #     if connection:
@@ -448,10 +473,14 @@ _____''', reply_markup=bt_sec)
         else:
             await bot.send_message(callback.from_user.id, f'''К сожалению, дальнейшее взаимодействие с Ботом невозможно 
 по причине вашего отказа от передачи своих данных.''', reply_markup=bt_sec)
-
-
-        await asyncio.sleep(1)
-        await main_menu(callback)
+            await state.finish()
+            await asyncio.sleep(1)
+            await main_menu(callback)
+            try:
+                for delit in range(1,20):
+                    await bot.delete_message(callback.chat.id, callback.message_id-delit)
+            except (Exception, Error, MessageToDeleteNotFound):
+                print('Нужные сообщеньки стёрлись')
 
 
 # ----------End Form "Собрать"-----------------
