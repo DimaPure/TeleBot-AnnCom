@@ -1,7 +1,6 @@
 import asyncio
 import time
 import datetime
-from contextlib import suppress
 
 import psycopg2
 from aiogram import types
@@ -25,7 +24,7 @@ index = "https://tgtest.sahome.ru/"
 # -------------------Приветствие-------------------------
 @dp.message_handler(commands=['start'])
 async def process_hi1_command(message: types.Message):
-    global connection, cursor
+    # global connection, cursor
     await message.answer(f'''🤖 Автодайлер «Бот N.»
       Голосовой робот-помощник для бизнеса
 
@@ -43,9 +42,11 @@ async def process_hi1_command(message: types.Message):
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', reply_markup=bt_sec)
 
     # try:
+    #     now = datetime.datetime.now()
+    #     timeN = now.strftime("%d/%m/%Y")
     #     connection = psycopg2.connect(database='for_bots',
     #                                   user='wisdom',
-    #                                   password='******',
+    #                                   password='vZSi#6j?X$',
     #                                   host='localhost',
     #                                   port='5432')
     #     print('База подключена')
@@ -53,24 +54,17 @@ async def process_hi1_command(message: types.Message):
     #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
     #     # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
     #     # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
-    #     cursor.execute(f'''insert into FORM_BOTS (user_id, name, username)
-    #                         values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}')
+    #     cursor.execute(f'''insert into USERS (user_id, name, username, time)
+    #                         values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}','{timeN}')
     #                           on conflict (user_id) do nothing''')
     # except (Exception, Error) as error:
     #     print('Ошибка при работе с PostgreSQL', error)
-    #
+
     # finally:
     #     if connection:
     #         cursor.close()
     #         connection.close()
 
-    await asyncio.sleep(2)
-    # await main_menu(message)
-
-
-# -----------------------📝|Предложить пост в канал--------------------------
-# -----------------------🆘|Помощь--------------------------
-# ---------------------------------------------------------------------------
 
 #  ----------------- 📝|Канал -----------------------------------------------
 @dp.message_handler(text=['📝|Канал'])
@@ -80,7 +74,7 @@ async def canal(message: types.Message):
     kb_canal.add(types.InlineKeyboardButton(text="|Главное меню", callback_data="Menu"))
     await bot.send_photo(message.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_canal,
                          caption=f'''{message.from_user.first_name}, здесь вы можете перейти в канал и чат нашего проекта 👇''', )
-
+    await bot.delete_message(message.chat.id, message.message_id)
 
 #  -------------------------------------------------
 
@@ -88,6 +82,7 @@ async def canal(message: types.Message):
 @dp.message_handler(commands=['help'])
 async def process_help_command(message: types.Message):
     await message.reply("Выберите пункт меню!")
+    await bot.delete_message(message.chat.id, message.message_id)
 
 
 # Menu------------------------------------------------
@@ -118,6 +113,7 @@ async def main_menu(message: types.Message):
  ✓ лидогенерация и многое другое…
  _____
  {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
+    await bot.delete_message(message.chat.id, message.message_id)
 
 
 # Кнопка главное меню ----------------------------------------------------------------------------------------
@@ -149,7 +145,7 @@ async def main_menu(message: types.Message):
  ✓ лидогенерация и многое другое…
  _____
  {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
-    await delete_message(message=message.message_id)
+    await bot.delete_message(message.chat.id, message.message_id)
 
 
 # ----------- Form Консультация ------------
@@ -227,12 +223,6 @@ async def admin_reply(message: types.Message):
         await bot.send_message(uid, "<strong>⚠Ответ от администратора: </strong>" + message.text)
     except CantInitiateConversation:
         await bot.reply("Ошибка\n")
-
-
-async def delete_message(message: types.Message, sleep_time: int = 0):
-    await asyncio.sleep(sleep_time)
-    with suppress(MessageCantBeDeleted, MessageToDeleteNotFound):
-        await message.delete()
 
 
 
