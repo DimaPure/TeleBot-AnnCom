@@ -59,8 +59,7 @@ async def main_menu(message: types.Message):
                 print('Нужные сообщеньки стёрлись')
 
 
-# -------------------------------------------------------------------- Консультация
-# ----------------------------------------------------------------------
+# ----------------- Консультация------------------------
 def konsult():
     class FormKonsult(StatesGroup):
         klient_message = State()
@@ -147,12 +146,12 @@ async def cancel(message: types.message, state: FSMContext):
 _____''', reply_markup=bt_sec)
 
     await state.finish()
+    await main_menu(message)
     try:    
-            for delit in range(1,3):
+            for delit in range(1,20):
                 await bot.delete_message(message.chat.id, message.message_id-delit)
     except (Exception, Error, MessageToDeleteNotFound):
             print('Нужные сообщеньки стёрлись')
-    await main_menu(message)
 
 
 @dp.message_handler(state=FormSos.message_bot)
@@ -442,10 +441,12 @@ _____''', reply_markup=bt_sec)
             await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
             await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', reply_markup=bt_sec,
                                    parse_mode=ParseMode.HTML)
+            await asyncio.sleep(2)
+            await main_menu(callback)
             try:
-                for delit in range(1,14):
+                for delit in range(1,20):
                     await bot.delete_message(callback.chat.id, callback.message_id-delit)
-            except (Exception, Error,MessageToDeleteNotFound):
+            except (Exception, Error, MessageToDeleteNotFound):
                 print('Нужные сообщеньки стёрлись')
 
             # try:
@@ -472,15 +473,14 @@ _____''', reply_markup=bt_sec)
         else:
             await bot.send_message(callback.from_user.id, f'''К сожалению, дальнейшее взаимодействие с Ботом невозможно 
 по причине вашего отказа от передачи своих данных.''', reply_markup=bt_sec)
+            await state.finish()
+            await asyncio.sleep(1)
+            await main_menu(callback)
             try:
-                for delit in range(0,14):
+                for delit in range(1,20):
                     await bot.delete_message(callback.chat.id, callback.message_id-delit)
             except (Exception, Error, MessageToDeleteNotFound):
                 print('Нужные сообщеньки стёрлись')
-
-
-        await asyncio.sleep(1)
-        await main_menu(callback)
 
 
 # ----------End Form "Собрать"-----------------
