@@ -117,6 +117,16 @@ function createTable() {
   document.body.append(mainTable);
 }
 
+const switchTable = document.createElement("button");
+switchTable.className = "switchTable";
+switchTable.textContent = "Сменить таблицу";
+
+switchTable.addEventListener("click", () => {
+  window.location.href = "templates/tableBox.html";
+});
+
+document.body.append(switchTable);
+
 createFilter();
 createTable();
 

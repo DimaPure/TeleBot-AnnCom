@@ -301,5 +301,15 @@ function createDataBot(data) {
   }
 }
 
+const switchTable = document.createElement("button");
+switchTable.className = "switchTable";
+switchTable.textContent = "Сменить таблицу";
+
+switchTable.addEventListener("click", () => {
+  window.location.href = "templates/table.html";
+});
+
+document.body.append(switchTable);
+
 createFilter();
 createTable();
