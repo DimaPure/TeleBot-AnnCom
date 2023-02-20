@@ -1,10 +1,13 @@
 const selectTable = document.getElementById("tableSelect").value;
+const sendButton = document.querySelector(".but");
+
 let body = 0;
 
 if (selectTable == "Пользователи, зашедшие в бота") {
   body = 1;
 }
-async function sendSwitch() {
+
+sendButton.addEventListener("submit", async function () {
   try {
     let response = await fetch("/login_admin", {
       method: "POST",
@@ -25,6 +28,5 @@ async function sendSwitch() {
       console.log(response);
     }
   } catch {}
-}
-
-sendSwitch();
+  console.log();
+});
