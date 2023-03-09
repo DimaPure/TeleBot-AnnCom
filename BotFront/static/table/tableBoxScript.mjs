@@ -5,8 +5,6 @@ function createArray(arr) {
   return data;
 }
 
-
-
 function createFilter() {
   const dateBox = document.createElement("div");
   dateBox.className = "dateBox";
@@ -70,9 +68,6 @@ function createTable() {
   const tbody = document.createElement("tbody");
   tbody.className = "tBody";
 
-  const fromSourceHead = document.createElement("th");
-  fromSourceHead.textContent = "Источник";
-
   const regDateHead = document.createElement("th");
   regDateHead.textContent = "дата РЕГ.";
 
@@ -98,7 +93,6 @@ function createTable() {
   CRMNameHead.textContent = "Название CRM";
 
   mainTable.append(
-    fromSourceHead,
     regDateHead,
     firstNameHead,
     userNameHead,
@@ -126,10 +120,6 @@ function createData(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
-    const fromSource = document.createElement("td");
-    fromSource.className = "fromSource";
-    fromSource.textContent = "Прислано с сайта";
-
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
     rowRegDate.textContent = subscriber.time;
@@ -180,7 +170,6 @@ function createData(data) {
     rowSending.textContent = subscriber.sending;
 
     row.append(
-      fromSource,
       rowRegDate,
       rowFirstName,
       rowUsername,
@@ -200,10 +189,6 @@ function createDataBot(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
-    const fromSource = document.createElement("td");
-    fromSource.className = "fromSource";
-    fromSource.textContent = "Прислано с бота";
-
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
     rowRegDate.textContent = subscriber.time;
@@ -254,7 +239,6 @@ function createDataBot(data) {
     rowSending.textContent = subscriber.sending;
 
     row.append(
-      fromSource,
       rowRegDate,
       rowFirstName,
       rowUsername,
@@ -269,15 +253,15 @@ function createDataBot(data) {
   }
 }
 
-// const switchTable = document.createElement("button");
-// switchTable.className = "switchTable";
-// switchTable.textContent = "Сменить таблицу";
+const switchTable = document.createElement("button");
+switchTable.className = "switchTable";
+switchTable.textContent = "Сменить таблицу";
 
-// switchTable.addEventListener("click", () => {
-//   window.location.href = "table.html";
-// });
+switchTable.addEventListener("click", () => {
+  window.location.href = "table.html";
+});
 
-// document.body.append(switchTable);
+document.body.append(switchTable);
 
 createFilter();
 createTable();
