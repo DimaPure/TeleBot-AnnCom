@@ -315,12 +315,14 @@ function form(card) {
   const telephonyDescription = document.createElement("p");
   telephonyDescription.textContent =
     "Роботу нужна исходящая связь и номера. Напишите, что подключаем?";
+    
   const telephony = document.createElement("select");
   telephony.className = "form-input";
   telephony.id = "telephony";
   if (card.name === "Пакет-фильтр базы") {
     telCheck.push("нужен комплекс услуг");
   }
+  // образование селектов
   for (let tel of telCheck) {
     const telLabel = document.createElement("option");
     telLabel.textContent = ucFirst(tel);

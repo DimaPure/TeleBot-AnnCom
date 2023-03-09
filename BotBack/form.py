@@ -449,27 +449,27 @@ _____''', reply_markup=bt_sec)
             except (Exception, Error, MessageToDeleteNotFound):
                 print('Нужные сообщеньки стёрлись')
 
-            # try:
+            try:
             # Дата
-            #     now = datetime.datetime.now()
-            #     timeN = now.strftime("%d/%m/%Y")
+                now = datetime.datetime.now()
+                timeN = now.strftime("%d/%m/%Y")
 
-            #     connection = psycopg2.connect(  database='BOT',
-                                    #   user='postgres',
-                                    #   password='CHISTOHIN025134',
-                                    #   host='localhost',
-                                    #   port='5432')
-            #     print('База подключена')
-            #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-            #     cursor = connection.cursor()
-            #     cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time, username) 
-            #     VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}','{callback.from_user.username}')''')
-            # except (Exception, Error) as error:
-            #     print('Ошибка при работе с PostgreSQL в форме', error)
-            # finally:
-            #     if connection:
-            #         cursor.close()
-            #         connection.close()
+                connection = psycopg2.connect(  database='for_bots',
+                                                user='wisdom',
+                                                password='vZSi#6j?X$',
+                                                host='localhost',
+                                                port='5432')
+                print('База подключена')
+                connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+                cursor = connection.cursor()
+                cursor.execute(f'''INSERT INTO FORM_BOT (company, phone, name, e_mail, time, username) 
+                VALUES ('{data['Company']}', {data['Phone']}, '{data['ClientName']}', '{data['E_mail']}','{timeN}','{callback.from_user.username}')''')
+            except (Exception, Error) as error:
+                print('Ошибка при работе с PostgreSQL в форме', error)
+            finally:
+                if connection:
+                    cursor.close()
+                    connection.close()
         else:
             await bot.send_message(callback.from_user.id, f'''К сожалению, дальнейшее взаимодействие с Ботом невозможно 
 по причине вашего отказа от передачи своих данных.''', reply_markup=bt_sec)

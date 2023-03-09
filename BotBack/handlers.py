@@ -41,29 +41,29 @@ async def process_hi1_command(message: types.Message):
     _____
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', reply_markup=bt_sec)
 
-    # try:
-    #     now = datetime.datetime.now()
-    #     timeN = now.strftime("%d/%m/%Y")
-    #     connection = psycopg2.connect(database='BOT',
-                                    #   user='postgres',
-                                    #   password='CHISTOHIN025134',
-                                    #   host='localhost',
-                                    #   port='5432')
-    #     print('База подключена')
-    #     cursor = connection.cursor()
-    #     connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
-    #     # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
-    #     # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
-    #     cursor.execute(f'''insert into USERS (user_id, name, username, time)
-    #                         values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}','{timeN}')
-    #                           on conflict (user_id) do nothing''')
-    # except (Exception, Error) as error:
-    #     print('Ошибка при работе с PostgreSQL', error)
+    try:
+        now = datetime.datetime.now()
+        timeN = now.strftime("%d/%m/%Y")
+        connection = psycopg2.connect(database='for_bots',
+                                        user='wisdom',
+                                        password='vZSi#6j?X$',
+                                        host='localhost',
+                                        port='5432')
+        print('База подключена')
+        cursor = connection.cursor()
+        connection.set_isolation_level(ISOLATION_LEVEL_AUTOCOMMIT)
+        # print(cursor.execute(f'select from users where user_id = {message.from_user.id}'))
+        # if cursor.execute(f'select from users where user_id = {message.from_user.id}') == None:
+        cursor.execute(f'''insert into USERS (user_id, name, username, time)
+                            values ('{message.from_user.id}', '{message.from_user.first_name}', '{message.from_user.username}','{timeN}')
+                              on conflict (user_id) do nothing''')
+    except (Exception, Error) as error:
+        print('Ошибка при работе с PostgreSQL', error)
 
-    # finally:
-    #     if connection:
-    #         cursor.close()
-    #         connection.close()
+    finally:
+        if connection:
+            cursor.close()
+            connection.close()
 
 
 #  ----------------- 📝|Канал -----------------------------------------------

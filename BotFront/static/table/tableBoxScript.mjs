@@ -269,15 +269,15 @@ function createDataBot(data) {
   }
 }
 
-// const switchTable = document.createElement("button");
-// switchTable.className = "switchTable";
-// switchTable.textContent = "Сменить таблицу";
+const switchTable = document.createElement("button");
+switchTable.className = "switchTable";
+switchTable.textContent = "Сменить таблицу";
 
-// switchTable.addEventListener("click", () => {
-//   window.location.href = "table.html";
-// });
+switchTable.addEventListener("click", () => {
+  window.location.href = "/users";
+});
 
-// document.body.append(switchTable);
+document.body.append(switchTable);
 
 createFilter();
 createTable();
