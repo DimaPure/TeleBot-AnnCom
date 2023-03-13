@@ -2,19 +2,24 @@ from flask import request
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
-from werkzeug.security import check_password_hash
 
 # database='for_bots',
-#                                           user='wisdom',
-#                                           password='vZSi#6j?X$',
-#                                           host='localhost',
-#                                           port='5432'
+# user='wisdom',
+# password='vZSi#6j?X$',
+# host='localhost',
+# port='5432'
+
+# database='BOT',
+#                                   user='postgres',
+#                                   password='CHISTOHIN025134',
+#                                   host='localhost',
+#                                   port='5432'
 
 
 def ConDB():
-    connection = psycopg2.connect(database='BOT',
-                                  user='postgres',
-                                  password='CHISTOHIN025134',
+    connection = psycopg2.connect(database='for_bots',
+                                  user='wisdom',
+                                  password='vZSi#6j?X$',
                                   host='localhost',
                                   port='5432')
     return connection
@@ -169,7 +174,3 @@ def withdrawDataAdmin_db():
         if connection == True:
             cursor.close()
             connection.close()
-
-
-# def check_password(pasHash, password):
-#     return check_password_hash(pasHash, password)

@@ -36,15 +36,15 @@ async def main_menu(message: types.Message):
     # kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
     kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(url=index)))
     kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(url=hotOffer)))
-    kb1.add(types.InlineKeyboardButton(text="Про бот N.", web_app=WebAppInfo(url=botN)))
-    kb1.insert(types.InlineKeyboardButton(text="Контакты", web_app=WebAppInfo(url=contacts)))
+    kb1.add(types.InlineKeyboardButton(text="Про Бот N.", web_app=WebAppInfo(url=botN)))
+    kb1.insert(types.InlineKeyboardButton(text="Контакты",  callback_data="contacts"))
     kb1.add(types.InlineKeyboardButton(text="Поделится", switch_inline_query='https://t.me/practicIST_bot'))
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
-    try:
-        await bot.delete_message(message.chat.id, message.message_id)
-    except (Exception, Error, AttributeError):
-                print('Нужные сообщеньки стёрлись')
+    # try:
+    #     await bot.delete_message(message.chat.id, message.message_id)
+    # except (Exception, Error, AttributeError):
+    #             print('Нужные сообщеньки стёрлись')
 
 
 # ----------------- Консультация------------------------
@@ -69,10 +69,7 @@ def konsult():
             return
 
         await state.finish()
-        await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-    _____''', reply_markup=bt_sec)
-     
-        await main_menu(message)
+        await bot.send_message(message.from_user.id, text='''Отмена отправки⛔''', reply_markup=bt_sec)
 
     @dp.message_handler(state=FormKonsult.klient_message)
     async def text_user(callback: types.callback_query, state: FSMContext):
@@ -99,8 +96,11 @@ def konsult():
                                f"{callback.from_user.first_name}, <b> Вы успешно отпрвили личноее сообщение. <u>Ожидайте ответа</u>\n\nСпасибо!🤝</b>",
                                reply_markup=bt_sec)
         await asyncio.sleep(2)
-        await bot.delete_message(callback.chat.id, callback.message_id-1)
-        await main_menu(callback)
+        # try:    
+        #     for delit in range(0,2):
+        #         await bot.delete_message(callback.chat.id, callback.message_id-delit)
+        # except (Exception, Error, MessageToDeleteNotFound):
+        #     print('Нужные сообщеньки стёрлись')
 
 
 # ------------------------------------------------------------------------------------------------------------------------------------------
@@ -130,16 +130,13 @@ async def cancel(message: types.message, state: FSMContext):
     if current_state is None:
         return
 
-    await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-_____''', reply_markup=bt_sec)
-
+    await bot.send_message(message.from_user.id, text='''Отмена отправки⛔''', reply_markup=bt_sec)
     await state.finish()
-    await main_menu(message)
-    try:    
-            for delit in range(1,20):
-                await bot.delete_message(message.chat.id, message.message_id-delit)
-    except (Exception, Error, MessageToDeleteNotFound):
-            print('Нужные сообщеньки стёрлись')
+    # try:    
+    #         for delit in range(1,20):
+    #             await bot.delete_message(message.chat.id, message.message_id-delit)
+    # except (Exception, Error, MessageToDeleteNotFound):
+    #         print('Нужные сообщеньки стёрлись')
 
 
 @dp.message_handler(state=FormSos.message_bot)
@@ -169,16 +166,14 @@ async def user_text(callback: types.callback_query, state: FSMContext):
                                        sep='\n'))
         await state.finish()
         await bot.send_message(CHANNEL_ID, f"@{callback.from_user.username}, {callback.from_user.id}")
-        await asyncio.sleep(2)
         await bot.send_message(callback.from_user.id, "В скором времени с вами свяжутся.\n\nСпасибо!🤝",
                                reply_markup=bt_sec)
         await asyncio.sleep(1)
-        await main_menu(callback)
-        try:    
-            for delit in range(1,3):
-                await bot.delete_message(callback.chat.id, callback.message_id-delit)
-        except (Exception, Error, MessageToDeleteNotFound):
-            print('Нужные сообщеньки стёрлись')
+        # try:    
+        #     for delit in range(0,3):
+        #         await bot.delete_message(callback.chat.id, callback.message_id-delit)
+        # except (Exception, Error, MessageToDeleteNotFound):
+        #     print('Нужные сообщеньки стёрлись')
 
 
 # ---------------------------------------------------------------------------------------------------------
@@ -191,7 +186,6 @@ def post():
     async def post_bt(callback: types.callback_query, state: FSMContext):
         await callback.answer('Кнопка не работает')
         await asyncio.sleep(3)
-        await main_menu(callback)
         await FormPost.klient_post.set()
         await callback.answer(f'{callback.from_user.username}, введите сообщение, которое хотите предложить.')
         await callback.delete()
@@ -261,12 +255,9 @@ _____
         if current_state is None:
             return
 
-        await bot.send_message(message.from_user.id, text='''🔥 Бот N — голосовой помощник от ANNCOM
-_____''', reply_markup=bt_sec)
-
+        await bot.send_message(message.from_user.id, text='''Отмена отправки⛔''', reply_markup=bt_sec)
         await state.finish()
         await asyncio.sleep(1)
-        await main_menu(message)
 
     @dp.message_handler(state=Form.Company)
     async def client_company(message: types.Message, state: FSMContext):
@@ -430,12 +421,11 @@ _____''', reply_markup=bt_sec)
             await bot.send_message(callback.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝', reply_markup=bt_sec,
                                    parse_mode=ParseMode.HTML)
             await asyncio.sleep(2)
-            await main_menu(callback)
-            try:
-                for delit in range(1,20):
-                    await bot.delete_message(callback.chat.id, callback.message_id-delit)
-            except (Exception, Error, MessageToDeleteNotFound):
-                print('Нужные сообщеньки стёрлись')
+            # try:
+            #     for delit in range(1,20):
+            #         await bot.delete_message(callback.chat.id, callback.message_id-delit)
+            # except (Exception, Error, MessageToDeleteNotFound):
+            #     print('Нужные сообщеньки стёрлись')
 
             try:
             # Дата
@@ -463,12 +453,11 @@ _____''', reply_markup=bt_sec)
 по причине вашего отказа от передачи своих данных.''', reply_markup=bt_sec)
             await state.finish()
             await asyncio.sleep(1)
-            await main_menu(callback)
-            try:
-                for delit in range(1,20):
-                    await bot.delete_message(callback.chat.id, callback.message_id-delit)
-            except (Exception, Error, MessageToDeleteNotFound):
-                print('Нужные сообщеньки стёрлись')
+            # try:
+            #     for delit in range(1,20):
+            #         await bot.delete_message(callback.chat.id, callback.message_id-delit)
+            # except (Exception, Error, MessageToDeleteNotFound):
+            #     print('Нужные сообщеньки стёрлись')
 
 
 # ----------End Form "Собрать"-----------------
@@ -493,7 +482,8 @@ def form_new_mess():
         current_state = await state.get_state()
         if current_state is None:
             return
-
+        
+        await bot.send_message(message.from_user.id, text='''Отмена отправки⛔''', reply_markup=bt_sec)
         await state.finish()
         await message.reply()
 
@@ -520,8 +510,6 @@ def form_new_mess():
             await state.finish()
             await bot.send_message(message.from_user.id, '<b>Спасибо! \n С вами свяжутся</b>🤝',
                                    parse_mode=ParseMode.HTML, reply_markup=bt_sec)
-            await asyncio.sleep(3)
-            await main_menu(message)
 
 # ----------End Form------------
 #
