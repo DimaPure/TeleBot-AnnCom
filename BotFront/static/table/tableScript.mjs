@@ -1,3 +1,22 @@
+function tableSearch() {
+  var phrase = document.getElementById("searchName");
+  var table = document.getElementById("mainTable");
+  var regPhrase = new RegExp(phrase.value, "i");
+  var flag = false;
+  for (var i = 0; i < table.rows.length; i++) {
+    flag = false;
+    for (var j = table.rows[i].cells.length - 1; j >= 0; j--) {
+      flag = regPhrase.test(table.rows[i].cells[j].innerHTML);
+      if (flag) break;
+    }
+    if (flag) {
+      table.rows[i].style.display = "";
+    } else {
+      table.rows[i].style.display = "none";
+    }
+  }
+}
+
 function createFilter() {
   const dateBox = document.createElement("div");
   dateBox.className = "dateBox";
@@ -54,14 +73,22 @@ function createFilter() {
       }
     }
   });
+  const searchName = document.createElement("input");
+  searchName.className = "searchName";
+  searchName.id = "searchName";
+  searchName.placeholder = "Поиск...";
+  searchName.addEventListener("keyup", () => {
+    tableSearch();
+  });
 
-  document.body.append(dateBox, searchDate);
+  document.body.append(dateBox, searchDate, searchName);
   dateBox.append(startDate, dash, endDate);
 }
 
 function createTable() {
   const mainTable = document.createElement("table");
   mainTable.className = "mainTable";
+  mainTable.id = "mainTable";
   const tbody = document.createElement("tbody");
 
   const regDateHead = document.createElement("th");
