@@ -23,6 +23,8 @@ from main import bot, dp
 
 hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
+botN = 'https://tgtest.sahome.ru/botN'
+contacts = 'https://tgtest.sahome.ru/contacts'
 
 
 # ----------Возврат меню------------------
@@ -31,27 +33,13 @@ async def main_menu(message: types.Message):
     kb1 = types.InlineKeyboardMarkup()
     kb1.insert(types.InlineKeyboardButton(text="Бесплатная консультация", callback_data="Konsult"))
     kb1.add(types.InlineKeyboardButton(text="О компании", callback_data="Company"))
-    kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
-    kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(
-        url=index)))
-    kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(
-        url=hotOffer)))
-    kb1.add(types.InlineKeyboardButton(text="Про бот N.", callback_data="bot_info"))
-    kb1.insert(types.InlineKeyboardButton(text="Контакты", callback_data="contacts"))
+    # kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
+    kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(url=index)))
+    kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(url=hotOffer)))
+    kb1.add(types.InlineKeyboardButton(text="Про бот N.", web_app=WebAppInfo(url=botN)))
+    kb1.insert(types.InlineKeyboardButton(text="Контакты", web_app=WebAppInfo(url=contacts)))
     kb1.add(types.InlineKeyboardButton(text="Поделится", switch_inline_query='https://t.me/practicIST_bot'))
-    await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
-    Голосовой робот-помощник для бизнеса
-
-    🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог
-    🔥умный секретарь для входящих звонков
-
-    ✓ оповещение об акциях
-    ✓ приглашение на вебинар/мероприятие
-    ✓ проведение опросов, анкетирование
-    ✓ фильтрация базы номеров
-    ✓ повышение лояльности клиентов
-    ✓ лидогенерация и многое другое…
-    _____
+    await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
     try:
         await bot.delete_message(message.chat.id, message.message_id)
@@ -536,4 +524,4 @@ def form_new_mess():
             await main_menu(message)
 
 # ----------End Form------------
-# 3
+#

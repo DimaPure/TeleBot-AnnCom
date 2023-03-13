@@ -15,30 +15,32 @@ import keyboards
 from form import form_colect, form_new_mess, konsult, post
 from keyboards import bt_sec
 from main import bot, dp
-from text_bt import bot_inf, comp, cont, ex, link
+from text_bt import comp, link
 
 hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
-
+botN = 'https://tgtest.sahome.ru/botN'
+contacts = 'https://tgtest.sahome.ru/contacts'
 
 # -------------------Приветствие-------------------------
 @dp.message_handler(commands=['start'])
 async def process_hi1_command(message: types.Message):
     # global connection, cursor
     await message.answer(f'''🤖 Автодайлер «Бот N.»
-      Голосовой робот-помощник для бизнеса
+ Голосовой робот-помощник для бизнеса
 
-    🔥передает голосовые сообщения, распознает ответы 
-      Человека, анализирует и умеет вести диалог
-    🔥умный секретарь для входящих звонков
+ 🔥передает голосовые сообщения, распознает ответы 
+   Человека, анализирует и умеет вести диалог
+   
+ 🔥умный секретарь для входящих звонков
 
-    ✓ оповещение об акциях
-    ✓ приглашение на вебинар/мероприятие
-    ✓ проведение опросов, анкетирование
-    ✓ фильтрация базы номеров
-    ✓ повышение лояльности клиентов
-    ✓ лидогенерация и многое другое…
-    _____
+ ✓ оповещение об акциях
+ ✓ приглашение на вебинар/мероприятие
+ ✓ проведение опросов, анкетирование
+ ✓ фильтрация базы номеров
+ ✓ повышение лояльности клиентов
+ ✓ лидогенерация и многое другое…
+ _____
     {message.from_user.first_name}, выберите пункт меню 👇🏻''', reply_markup=bt_sec)
 
     try:
@@ -91,60 +93,13 @@ async def main_menu(message: types.Message):
     kb1 = types.InlineKeyboardMarkup()
     kb1.insert(types.InlineKeyboardButton(text="Бесплатная консультация", callback_data="Konsult"))
     kb1.add(types.InlineKeyboardButton(text="О компании", callback_data="Company"))
-    kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
+    # kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
     kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(url=index)))
     kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(url=hotOffer)))
-    kb1.add(types.InlineKeyboardButton(text="Про бот N.", callback_data="bot_info"))
-    kb1.insert(types.InlineKeyboardButton(text="Контакты", callback_data="contacts"))
+    kb1.add(types.InlineKeyboardButton(text="Про бот N.", web_app=WebAppInfo(url=botN)))
+    kb1.insert(types.InlineKeyboardButton(text="Контакты", web_app=WebAppInfo(url=contacts)))
     kb1.add(types.InlineKeyboardButton(text="Поделится", switch_inline_query='https://t.me/practicIST_bot'))
-    await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
- Голосовой робот-помощник для бизнеса
-
- 🔥передает голосовые сообщения, распознает ответы 
-   Человека, анализирует и умеет вести диалог
-   
- 🔥умный секретарь для входящих звонков
-
- ✓ оповещение об акциях
- ✓ приглашение на вебинар/мероприятие
- ✓ проведение опросов, анкетирование
- ✓ фильтрация базы номеров
- ✓ повышение лояльности клиентов
- ✓ лидогенерация и многое другое…
- _____
- {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
-    await bot.delete_message(message.chat.id, message.message_id)
-
-
-# Кнопка главное меню ----------------------------------------------------------------------------------------
-@dp.callback_query_handler(text_contains='menu')
-async def main_menu(message: types.Message):
-    kb1 = types.InlineKeyboardMarkup()
-    kb1.insert(types.InlineKeyboardButton(text="Бесплатная консультация", callback_data="Konsult"))
-    kb1.add(types.InlineKeyboardButton(text="О компании", callback_data="Company"))
-    kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
-    kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(
-        url=index)))
-    kb1.insert(types.InlineKeyboardButton(text="🔥Предложение", web_app=WebAppInfo(
-        url=hotOffer)))
-    kb1.add(types.InlineKeyboardButton(text="Про Бот N.", callback_data="bot_info"))
-    kb1.insert(types.InlineKeyboardButton(text="Контакты", callback_data="contacts"))
-    kb1.add(types.InlineKeyboardButton(text="Поделиться", switch_inline_query='https://t.me/practicIST_bot'))
-    await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f'''🤖 Автодайлер «Бот N.»
-  Голосовой робот-помощник для бизнеса
-
- 🔥передает голосовые сообщения, распознает ответы Человека, анализирует и умеет вести диалог\n
- 
- 🔥умный секретарь для входящих звонков
-
- ✓ оповещение об акциях
- ✓ приглашение на вебинар/мероприятие
- ✓ проведение опросов, анкетирование
- ✓ фильтрация базы номеров
- ✓ повышение лояльности клиентов
- ✓ лидогенерация и многое другое…
- _____
- {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
+    await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f''' {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
     await bot.delete_message(message.chat.id, message.message_id)
 
 
@@ -175,31 +130,30 @@ async def qr_message(call: types.callback_query, state: FSMContext):
         case "Company":
             kb_Company = InlineKeyboardMarkup()
             kb_Company.row(types.InlineKeyboardButton(text='✅|бесплатная консультация', callback_data='Konsult'))
-            kb_Company.row(types.InlineKeyboardButton(text='🤖 в КОРОБКЕ', web_app=WebAppInfo(
-                url=index)))
-            kb_Company.row(types.InlineKeyboardButton(text='Контакты', callback_data='contacts'))
+            kb_Company.row(types.InlineKeyboardButton(text='🤖 в КОРОБКЕ', web_app=WebAppInfo(url=index)))
+            kb_Company.row(types.InlineKeyboardButton(text='Контакты', web_app=WebAppInfo(url=contacts)))
             kb_Company.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
             await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_Company,
                                  caption=comp)
         # Контакты ------------------------------------------------------------------------------------------------------
-        case "contacts":
-            kb_contacts = InlineKeyboardMarkup()
-            kb_contacts.insert(types.InlineKeyboardButton(text='📨|Написать соощение', callback_data='mess_to_add'))
-            kb_contacts.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
-            await bot.send_message(call.from_user.id, cont, disable_web_page_preview=True, reply_markup=kb_contacts)
+        # case "contacts":
+        #     kb_contacts = InlineKeyboardMarkup()
+        #     kb_contacts.insert(types.InlineKeyboardButton(text='📨|Написать соощение', callback_data='mess_to_add'))
+        #     kb_contacts.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
+        #     await bot.send_message(call.from_user.id, cont, disable_web_page_preview=True, reply_markup=kb_contacts)
         # Про бот N ----------------------------------------------------------------------------------------------------------------------
-        case "bot_info":
-            kb_bot_info = InlineKeyboardMarkup()
-            kb_bot_info.row(types.InlineKeyboardButton(text='❓ Какие задачи можно решить', callback_data='may_ex'))
-            kb_bot_info.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
-            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_bot_info,
-                                 caption=bot_inf)
+        # case "bot_info":
+        #     kb_bot_info = InlineKeyboardMarkup()
+        #     kb_bot_info.row(types.InlineKeyboardButton(text='❓ Какие задачи можно решить', callback_data='may_ex'))
+        #     kb_bot_info.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
+        #     await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_bot_info,
+        #                          caption=bot_inf)
         # ❓ Какие задачи можно решить ---------------------------------------------------------------------------------------------------
-        case "may_ex":
-            kb_may_ex = InlineKeyboardMarkup()
-            kb_may_ex.row(types.InlineKeyboardButton(text='⬅| Вернуться назад', callback_data='bot_info'))
-            kb_may_ex.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
-            await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_may_ex, caption=ex)
+        # case "may_ex":
+        #     kb_may_ex = InlineKeyboardMarkup()
+        #     kb_may_ex.row(types.InlineKeyboardButton(text='⬅| Вернуться назад', callback_data='bot_info'))
+        #     kb_may_ex.row(types.InlineKeyboardButton(text='| Главное меню', callback_data='Menu'))
+        #     await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_may_ex, caption=ex)
 
 
 @dp.message_handler()
