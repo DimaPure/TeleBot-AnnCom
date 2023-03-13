@@ -15,7 +15,7 @@ import keyboards
 from form import form_colect, form_new_mess, konsult, post
 from keyboards import bt_sec
 from main import bot, dp
-from text_bt import comp, link
+from text_bt import comp, link, cont
 
 hotOffer = 'https://tgtest.sahome.ru/hotOffer'
 index = "https://tgtest.sahome.ru/"
@@ -96,8 +96,8 @@ async def main_menu(message: types.Message):
     # kb1.insert(types.InlineKeyboardButton(text="Собрать 🤖", callback_data="robot"))
     kb1.add(types.InlineKeyboardButton(text="🤖 в коробке", web_app=WebAppInfo(url=index)))
     kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(url=hotOffer)))
-    kb1.add(types.InlineKeyboardButton(text="Про бот N.", web_app=WebAppInfo(url=botN)))
-    kb1.insert(types.InlineKeyboardButton(text="Контакты", web_app=WebAppInfo(url=contacts)))
+    kb1.add(types.InlineKeyboardButton(text="Про Бот N.", web_app=WebAppInfo(url=botN)))
+    kb1.insert(types.InlineKeyboardButton(text="Контакты",callback_data="contacts"))
     kb1.add(types.InlineKeyboardButton(text="Поделится", switch_inline_query='https://t.me/practicIST_bot'))
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f''' {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
     await bot.delete_message(message.chat.id, message.message_id)
@@ -131,16 +131,16 @@ async def qr_message(call: types.callback_query, state: FSMContext):
             kb_Company = InlineKeyboardMarkup()
             kb_Company.row(types.InlineKeyboardButton(text='✅|бесплатная консультация', callback_data='Konsult'))
             kb_Company.row(types.InlineKeyboardButton(text='🤖 в КОРОБКЕ', web_app=WebAppInfo(url=index)))
-            kb_Company.row(types.InlineKeyboardButton(text='Контакты', web_app=WebAppInfo(url=contacts)))
+            # kb_Company.row(types.InlineKeyboardButton(text='Контакты', web_app=WebAppInfo(url=contacts)))
             kb_Company.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
             await bot.send_photo(call.from_user.id, InputFile('pic/Mini_icon.jpg'), reply_markup=kb_Company,
                                  caption=comp)
-        # Контакты ------------------------------------------------------------------------------------------------------
-        # case "contacts":
-        #     kb_contacts = InlineKeyboardMarkup()
-        #     kb_contacts.insert(types.InlineKeyboardButton(text='📨|Написать соощение', callback_data='mess_to_add'))
-        #     kb_contacts.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
-        #     await bot.send_message(call.from_user.id, cont, disable_web_page_preview=True, reply_markup=kb_contacts)
+        #Контакты ------------------------------------------------------------------------------------------------------
+        case "contacts":
+            kb_contacts = InlineKeyboardMarkup()
+            kb_contacts.insert(types.InlineKeyboardButton(text='📨|Написать соощение', callback_data='mess_to_add'))
+            kb_contacts.row(types.InlineKeyboardButton(text='Главное меню', callback_data='Menu'))
+            await bot.send_message(call.from_user.id, cont, disable_web_page_preview=True, reply_markup=kb_contacts)
         # Про бот N ----------------------------------------------------------------------------------------------------------------------
         # case "bot_info":
         #     kb_bot_info = InlineKeyboardMarkup()

@@ -2,9 +2,7 @@ from flask import Flask, render_template, redirect
 from func import *
 from flask import Flask, request, render_template
 from flask_httpauth import HTTPBasicAuth
-from flask_bootstrap import Bootstrap
-
-USER_LOGIN_TEMPLATE = 'templates/admin/master.html'
+from werkzeug.security import check_password_hash
 
 # security
 auth = HTTPBasicAuth()
@@ -53,12 +51,6 @@ def get_bot():
     return render_template('botN.html')
 
 
-@app.route('/contacts', methods=['POST', 'GET'])
-def get_cont():
-    push_bd()
-    return render_template('contacts.html')
-
-
 @app.route('/users', methods=['POST', 'GET'])
 @auth.login_required
 def get_users():
@@ -74,30 +66,6 @@ def get_data():
     return render_template('tableBox.html',
                            jsonStrSite=data_push1,
                            jsonStrBot=data_push2)
-
-
-# @app.route('/login_admin', methods=['POST', 'GET'])
-# def login():
-#     if request.method == 'POST':
-#         # получили логин и пароль ввода пользователя
-#         username = request.form['username']
-#         password = request.form['password']
-#         tableSel = request.form['tableS']
-
-#         dataAdmin = withdrawDataAdmin_db()
-#         userdb = dataAdmin[1]
-#         hashDB = dataAdmin[0]
-
-#         if check_password(hashDB, password) and username == userdb:
-#             if tableSel == "Пользователи, зашедшие в бота":
-#                 return redirect('/users')
-#             else:
-#                 return redirect('/data')
-#         else:
-#             error = "Попробуйте ещё раз, не все данные верны"
-#             return render_template('login.html', error=error)
-
-#     return render_template('login.html')
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port="5000", debug=False)
