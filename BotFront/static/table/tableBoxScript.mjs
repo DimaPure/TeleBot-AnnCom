@@ -139,8 +139,16 @@ function createTable() {
   const data = createArray(data_site);
   const data2 = createArray(data_bot);
 
-  createData(data);
-  createDataBot(data2);
+  const sortedSubscribers = data.sort(
+    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+  );
+
+  const sortedSubscribers2 = data.sort(
+    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+  );
+
+  createData(sortedSubscribers);
+  createDataBot(sortedSubscribers2);
 }
 
 function createData(data) {
@@ -148,9 +156,14 @@ function createData(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
+    const inputDate = subscriber.registrationDate;
+    const splited = inputDate.split("/");
+    const swaped = [splited[1], splited[0], splited[2]].join(".");
+
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.time;
+    rowRegDate.type = "date";
+    rowRegDate.textContent = swaped;
 
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;
@@ -217,9 +230,14 @@ function createDataBot(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
+    const inputDate = subscriber.registrationDate;
+    const splited = inputDate.split("/");
+    const swaped = [splited[1], splited[0], splited[2]].join(".");
+
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.time;
+    rowRegDate.type = "date";
+    rowRegDate.textContent = swaped;
 
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;

@@ -115,13 +115,22 @@ function createTable() {
 
   var data = JSON.parse(newJson);
 
-  for (let subscriber of data) {
+  const sortedSubscribers = data.sort(
+    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+  );
+
+  for (let subscriber of sortedSubscribers) {
     const row = document.createElement("tr");
     row.className = "database";
 
+    const inputDate = subscriber.registrationDate;
+    const splited = inputDate.split("/");
+    const swaped = [splited[1], splited[0], splited[2]].join(".");
+
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.time;
+    rowRegDate.type = "date";
+    rowRegDate.textContent = swaped;
 
     const rowTimeReg = document.createElement("td");
     rowTimeReg.textContent = subscriber.registrationTime;
