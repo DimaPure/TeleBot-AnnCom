@@ -151,10 +151,11 @@ function form() {
   const politicChecbox = document.createElement("input");
   politicChecbox.type = "checkbox";
   politicChecbox.id = "politicCheckbox";
-  const politicLabel = document.createElement("label");
+  const politicLabel = document.createElement("a");
   politicChecbox.for = "politicCheckbox";
   politicLabel.textContent =
     "Я ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ";
+  politicLabel.href = "https://www.anncom.ru/o-companii/privacy-policy/";
 
   politicForm.append(politicChecbox, politicLabel);
 
@@ -236,7 +237,8 @@ function form() {
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      (validateEmail(email.value) && /\S/.test(email.value)) &&
+      validateEmail(email.value) &&
+      /\S/.test(email.value) &&
       /\S/.test(email.value) &&
       /\S/.test(name.value) &&
       politicChecbox.checked == true
@@ -296,7 +298,6 @@ function form() {
       let compan = company.value;
       let crm = "-";
       let cardd = "Горячее предложение";
-
 
       fetch("/hotOffer", {
         headers: {

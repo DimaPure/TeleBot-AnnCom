@@ -315,7 +315,7 @@ function form(card) {
   const telephonyDescription = document.createElement("p");
   telephonyDescription.textContent =
     "Роботу нужна исходящая связь и номера. Напишите, что подключаем?";
-    
+
   const telephony = document.createElement("select");
   telephony.className = "form-input";
   telephony.id = "telephony";
@@ -480,10 +480,11 @@ function form(card) {
   const politicChecbox = document.createElement("input");
   politicChecbox.type = "checkbox";
   politicChecbox.id = "politicCheckbox";
-  const politicLabel = document.createElement("label");
+  const politicLabel = document.createElement("a");
   politicChecbox.for = "politicCheckbox";
   politicLabel.textContent =
     "Я ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ";
+  politicLabel.href = "https://www.anncom.ru/o-companii/privacy-policy/";
 
   politicForm.append(politicChecbox, politicLabel);
   form.append(politicForm);
@@ -517,7 +518,8 @@ function form(card) {
     if (
       /\S/.test(company.value) &&
       validatePhone(phoneNumber.value) &&
-      (validateEmail(email.value) && /\S/.test(email.value)) &&
+      validateEmail(email.value) &&
+      /\S/.test(email.value) &&
       /\S/.test(name.value) &&
       /\S/.test(numberOfPhones.value) &&
       politicChecbox.checked == true
@@ -591,10 +593,10 @@ function form(card) {
 
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
       var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
       var yyyy = today.getFullYear();
-      today = mm + '/' + dd + '/' + yyyy;
+      today = mm + "/" + dd + "/" + yyyy;
 
       let name_py = name.value;
       let email_py = email.value;
@@ -610,7 +612,6 @@ function form(card) {
         cardd = "Индивидуальная коробка";
       }
 
-
       fetch("/", {
         headers: {
           "Content-Type": "application/json",
@@ -623,7 +624,7 @@ function form(card) {
           time,
           compan,
           crm,
-          cardd
+          cardd,
         }),
       })
         .then(function (response) {
@@ -766,10 +767,10 @@ function form(card) {
 
       //Связка с flask ---------------------------------------------------------------------------------------------------------------------------
       var today = new Date();
-      var dd = String(today.getDate()).padStart(2, '0');
-      var mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+      var dd = String(today.getDate()).padStart(2, "0");
+      var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
       var yyyy = today.getFullYear();
-      today = mm + '/' + dd + '/' + yyyy;
+      today = mm + "/" + dd + "/" + yyyy;
 
       let name_py = name.value;
       let email_py = email.value;
@@ -785,7 +786,6 @@ function form(card) {
         cardd = "Индивидуальная коробка";
       }
 
-
       fetch("/", {
         headers: {
           "Content-Type": "application/json",
@@ -798,7 +798,7 @@ function form(card) {
           time,
           compan,
           crm,
-          cardd
+          cardd,
         }),
       })
         .then(function (response) {
