@@ -1,4 +1,5 @@
 from flask import request
+
 import psycopg2
 from psycopg2 import Error
 from psycopg2.extensions import ISOLATION_LEVEL_AUTOCOMMIT
