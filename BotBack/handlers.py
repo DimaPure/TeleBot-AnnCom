@@ -98,7 +98,7 @@ async def main_menu(message: types.Message):
     kb1.insert(types.InlineKeyboardButton(text="🔥Предожение", web_app=WebAppInfo(url=hotOffer)))
     kb1.add(types.InlineKeyboardButton(text="Про Бот N.", web_app=WebAppInfo(url=botN)))
     kb1.insert(types.InlineKeyboardButton(text="Контакты",callback_data="contacts"))
-    kb1.add(types.InlineKeyboardButton(text="Поделится", switch_inline_query='https://t.me/practicIST_bot'))
+    kb1.add(types.InlineKeyboardButton(text="Поделиться", switch_inline_query='https://t.me/practicIST_bot'))
     await bot.send_photo(message.from_user.id, InputFile("pic/icon.jpg"), reply_markup=kb1, caption=f''' {message.from_user.first_name}, выберите пункт меню 👇🏻''', )
     await bot.delete_message(message.chat.id, message.message_id)
 
