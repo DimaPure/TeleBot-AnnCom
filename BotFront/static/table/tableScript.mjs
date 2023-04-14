@@ -110,12 +110,7 @@ function createTable() {
   const data_users = document.getElementById("json").innerHTML;
   console.log(data_users);
 
-  var newJson = data_users.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
-  newJson = newJson.replace(/'/g, '"');
-
-  var data = JSON.parse(newJson);
-
-  const sortedSubscribers = data.sort(
+  const sortedSubscribers = data_users.sort(
     (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
   );
 

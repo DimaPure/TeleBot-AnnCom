@@ -24,133 +24,6 @@ function tableSearch() {
   }
 }
 
-function createFilter() {
-  const dateBox = document.createElement("div");
-  dateBox.className = "dateBox";
-
-  const startDate = document.createElement("input");
-  startDate.type = "date";
-  startDate.className = "startDate";
-
-  const endDate = document.createElement("input");
-  endDate.type = "date";
-  endDate.className = "endDate";
-
-  const dash = document.createElement("label");
-  dash.className = "dash";
-  dash.textContent = " - ";
-
-  const searchDate = document.createElement("button");
-  searchDate.className = "searchDate";
-  searchDate.textContent = "Отфильтровать";
-
-  searchDate.addEventListener("click", () => {
-    const tr = document.getElementsByClassName("database");
-
-    const backTTF = document.createElement("button");
-    backTTF.textContent = "Назад";
-    document.body.prepend(backTTF);
-
-    backTTF.addEventListener("click", () => {
-      const mainTable = document.querySelector(".mainTable");
-      mainTable.remove();
-      backTTF.remove();
-      createTable();
-    });
-
-    for (var i = 0; i < tr.length; i++) {
-      var td = tr[i].getElementsByClassName("date")[0];
-      let td_date = td.innerHTML;
-      td_date =
-        td_date.substr(6, 4) +
-        "-" +
-        td_date.substr(3, 2) +
-        "-" +
-        td_date.substr(0, 2);
-
-      let start = startDate.value;
-      let end = endDate.value;
-      if (td_date < start || end < td_date) {
-        tr[i].style.position = "absolute";
-        tr[i].style.visibility = "hidden";
-      }
-    }
-  });
-
-  const searchName = document.createElement("input");
-  searchName.className = "searchName";
-  searchName.id = "searchName";
-  searchName.placeholder = "Поиск...";
-  searchName.addEventListener("keyup", () => {
-    tableSearch();
-  });
-
-  document.body.append(dateBox, searchDate, searchName);
-  dateBox.append(startDate, dash, endDate);
-}
-
-function createTable() {
-  const mainTable = document.createElement("table");
-  mainTable.className = "mainTable";
-  mainTable.id = "mainTable";
-  const tbody = document.createElement("tbody");
-  tbody.className = "tBody";
-
-  const regDateHead = document.createElement("th");
-  regDateHead.textContent = "дата РЕГ.";
-
-  const firstNameHead = document.createElement("th");
-  firstNameHead.textContent = "TG (first_name)";
-
-  const userNameHead = document.createElement("th");
-  userNameHead.textContent = "TG (username)";
-
-  const boxHead = document.createElement("th");
-  boxHead.textContent = "Название коробки";
-
-  const companyHead = document.createElement("th");
-  companyHead.textContent = "Компания";
-
-  const numberHead = document.createElement("th");
-  numberHead.textContent = "Номер телефона";
-
-  const emailHead = document.createElement("th");
-  emailHead.textContent = "e-mail";
-
-  const CRMNameHead = document.createElement("th");
-  CRMNameHead.textContent = "Название CRM";
-
-  mainTable.append(
-    regDateHead,
-    firstNameHead,
-    userNameHead,
-    boxHead,
-    companyHead,
-    numberHead,
-    emailHead,
-    CRMNameHead
-  );
-  mainTable.append(tbody);
-  document.body.append(mainTable);
-  const data_site = document.getElementById("json2").innerHTML;
-
-  const data_bot = document.getElementById("json3").innerHTML;
-
-  const data = createArray(data_site);
-  const data2 = createArray(data_bot);
-
-  const sortedSubscribers = data.sort(
-    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
-  );
-
-  const sortedSubscribers2 = data.sort(
-    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
-  );
-
-  createData(sortedSubscribers);
-  createDataBot(sortedSubscribers2);
-}
-
 function createData(data) {
   for (let subscriber of data) {
     const row = document.createElement("tr");
@@ -297,6 +170,133 @@ function createDataBot(data) {
     const tbody = document.querySelector(".tBody");
     tbody.append(row);
   }
+}
+
+function createFilter() {
+  const dateBox = document.createElement("div");
+  dateBox.className = "dateBox";
+
+  const startDate = document.createElement("input");
+  startDate.type = "date";
+  startDate.className = "startDate";
+
+  const endDate = document.createElement("input");
+  endDate.type = "date";
+  endDate.className = "endDate";
+
+  const dash = document.createElement("label");
+  dash.className = "dash";
+  dash.textContent = " - ";
+
+  const searchDate = document.createElement("button");
+  searchDate.className = "searchDate";
+  searchDate.textContent = "Отфильтровать";
+
+  searchDate.addEventListener("click", () => {
+    const tr = document.getElementsByClassName("database");
+
+    const backTTF = document.createElement("button");
+    backTTF.textContent = "Назад";
+    document.body.prepend(backTTF);
+
+    backTTF.addEventListener("click", () => {
+      const mainTable = document.querySelector(".mainTable");
+      mainTable.remove();
+      backTTF.remove();
+      createTable();
+    });
+
+    for (var i = 0; i < tr.length; i++) {
+      var td = tr[i].getElementsByClassName("date")[0];
+      let td_date = td.innerHTML;
+      td_date =
+        td_date.substr(6, 4) +
+        "-" +
+        td_date.substr(3, 2) +
+        "-" +
+        td_date.substr(0, 2);
+
+      let start = startDate.value;
+      let end = endDate.value;
+      if (td_date < start || end < td_date) {
+        tr[i].style.position = "absolute";
+        tr[i].style.visibility = "hidden";
+      }
+    }
+  });
+
+  const searchName = document.createElement("input");
+  searchName.className = "searchName";
+  searchName.id = "searchName";
+  searchName.placeholder = "Поиск...";
+  searchName.addEventListener("keyup", () => {
+    tableSearch();
+  });
+
+  document.body.append(dateBox, searchDate, searchName);
+  dateBox.append(startDate, dash, endDate);
+}
+
+function createTable() {
+  const mainTable = document.createElement("table");
+  mainTable.className = "mainTable";
+  mainTable.id = "mainTable";
+  const tbody = document.createElement("tbody");
+  tbody.className = "tBody";
+
+  const regDateHead = document.createElement("th");
+  regDateHead.textContent = "дата РЕГ.";
+
+  const firstNameHead = document.createElement("th");
+  firstNameHead.textContent = "TG (first_name)";
+
+  const userNameHead = document.createElement("th");
+  userNameHead.textContent = "TG (username)";
+
+  const boxHead = document.createElement("th");
+  boxHead.textContent = "Название коробки";
+
+  const companyHead = document.createElement("th");
+  companyHead.textContent = "Компания";
+
+  const numberHead = document.createElement("th");
+  numberHead.textContent = "Номер телефона";
+
+  const emailHead = document.createElement("th");
+  emailHead.textContent = "e-mail";
+
+  const CRMNameHead = document.createElement("th");
+  CRMNameHead.textContent = "Название CRM";
+
+  mainTable.append(
+    regDateHead,
+    firstNameHead,
+    userNameHead,
+    boxHead,
+    companyHead,
+    numberHead,
+    emailHead,
+    CRMNameHead
+  );
+  mainTable.append(tbody);
+  document.body.append(mainTable);
+  const data_site = document.getElementById("json2").innerHTML;
+
+  const data_bot = document.getElementById("json3").innerHTML;
+
+  const data = data_site;
+  const data2 = data_bot;
+
+  const sortedSubscribers = data.sort(
+    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+  );
+
+  const sortedSubscribers2 = data2.sort(
+    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+  );
+
+  createData(sortedSubscribers);
+  createDataBot(sortedSubscribers2);
 }
 
 const switchTable = document.createElement("button");
