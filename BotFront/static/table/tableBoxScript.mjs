@@ -29,9 +29,9 @@ function createData(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
-    const inputDate = subscriber.registrationDate;
+    const inputDate = subscriber.time;
     const splited = inputDate.split("/");
-    const swaped = [splited[1], splited[0], splited[2]].join(".");
+    const swaped = [splited[0], splited[1], splited[2]].join(".");
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
@@ -103,9 +103,9 @@ function createDataBot(data) {
     const row = document.createElement("tr");
     row.className = "database";
 
-    const inputDate = subscriber.registrationDate;
+    const inputDate = subscriber.time;
     const splited = inputDate.split("/");
-    const swaped = [splited[1], splited[0], splited[2]].join(".");
+    const swaped = [splited[0], splited[1], splited[2]].join(".");
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
@@ -288,11 +288,11 @@ function createTable() {
   const data2 = data_bot;
 
   const sortedSubscribers = data.sort(
-    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+    (a, b) => new Date(b.time) - new Date(a.time)
   );
 
   const sortedSubscribers2 = data2.sort(
-    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+    (a, b) => new Date(b.time) - new Date(a.time)
   );
 
   createData(sortedSubscribers);

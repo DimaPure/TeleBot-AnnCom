@@ -108,7 +108,6 @@ function createTable() {
 
   // Данные юзеров
   const data_users = document.getElementById("json").innerHTML;
-  console.log(data_users);
 
   const sortedSubscribers = data_users.sort(
     (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
@@ -120,15 +119,12 @@ function createTable() {
 
     const inputDate = subscriber.registrationDate;
     const splited = inputDate.split("/");
-    const swaped = [splited[1], splited[0], splited[2]].join(".");
+    const swaped = [splited[0], splited[1], splited[2]].join(".");
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
     rowRegDate.type = "date";
     rowRegDate.textContent = swaped;
-
-    const rowTimeReg = document.createElement("td");
-    rowTimeReg.textContent = subscriber.registrationTime;
 
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;
