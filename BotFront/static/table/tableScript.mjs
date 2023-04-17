@@ -119,7 +119,7 @@ function createTable() {
   const data = createArray(data_users);
 
   const sortedSubscribers = data.sort(
-    (a, b) => new Date(b.time) - new Date(a.time)
+    (a, b) => new Date(a.time) - new Date(b.time)
   );
 
   for (let subscriber of sortedSubscribers) {
