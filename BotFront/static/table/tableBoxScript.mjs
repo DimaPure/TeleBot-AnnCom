@@ -176,7 +176,7 @@ function createTable() {
   document.body.append(mainTable);
   const data_site = document.getElementById("json2").innerHTML;
 
-  const data = data_site;
+  const data = createArray(data_site);
 
   console.log(data);
 

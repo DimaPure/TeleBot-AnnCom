@@ -1,3 +1,10 @@
+function createArray(arr) {
+  var newJson = arr.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
+  newJson = newJson.replace(/'/g, '"');
+  var data = JSON.parse(newJson);
+  return data;
+}
+
 function tableSearch() {
   var phrase = document.getElementById("searchName");
   var table = document.getElementById("mainTable");
@@ -109,7 +116,9 @@ function createTable() {
   // Данные юзеров
   const data_users = document.getElementById("json").innerHTML;
 
-  const sortedSubscribers = data_users.sort(
+  const data = createArray(data_users);
+
+  const sortedSubscribers = data.sort(
     (a, b) => new Date(b.time) - new Date(a.time)
   );
 
