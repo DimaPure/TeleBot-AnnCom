@@ -174,7 +174,7 @@ function createTable() {
   );
   mainTable.append(tbody);
   document.body.append(mainTable);
-  const data_site = subscribers;
+  const data_site = document.getElementById("json2").innerHTML;
 
   const data = data_site;
 

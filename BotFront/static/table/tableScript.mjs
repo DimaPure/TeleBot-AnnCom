@@ -110,14 +110,14 @@ function createTable() {
   const data_users = document.getElementById("json").innerHTML;
 
   const sortedSubscribers = data_users.sort(
-    (a, b) => new Date(b.registrationDate) - new Date(a.registrationDate)
+    (a, b) => new Date(b.time) - new Date(a.time)
   );
 
   for (let subscriber of sortedSubscribers) {
     const row = document.createElement("tr");
     row.className = "database";
 
-    const inputDate = subscriber.registrationDate;
+    const inputDate = subscriber.time;
     const splited = inputDate.split("/");
     const swaped = [splited[0], splited[1], splited[2]].join(".");
 
