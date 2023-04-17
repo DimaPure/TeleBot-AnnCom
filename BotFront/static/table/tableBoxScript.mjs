@@ -31,7 +31,7 @@ function createData(data) {
 
     const inputDate = subscriber.time;
     const splited = inputDate.split("/");
-    const swaped = [splited[0], splited[1], splited[2]].join(".");
+    const swaped = [splited[1], splited[0], splited[2]].join(".");
 
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
@@ -40,9 +40,6 @@ function createData(data) {
 
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;
-
-    const rowUsername = document.createElement("td");
-    rowUsername.textContent = subscriber.username;
 
     const rowBox = document.createElement("td");
     rowBox.textContent = subscriber.card;
@@ -59,108 +56,9 @@ function createData(data) {
     const rowEmail = document.createElement("td");
     rowEmail.textContent = subscriber.crm;
 
-    const rowTelephony = document.createElement("td");
-    rowTelephony.textContent = subscriber.telephony;
-
-    const rowRobotType = document.createElement("td");
-    rowRobotType.textContent = subscriber.robotType;
-
-    const rowNumberOf = document.createElement("td");
-    rowNumberOf.textContent = subscriber.numberOfPhones;
-
-    const rowCRM = document.createElement("td");
-    rowCRM.textContent = subscriber.CRMName;
-
-    const rowCMS = document.createElement("td");
-    rowCMS.textContent = subscriber.CMS;
-
-    const rowAnswer = document.createElement("td");
-    rowAnswer.textContent = subscriber.answer;
-
-    const rowScenario = document.createElement("td");
-    rowScenario.textContent = subscriber.scenario;
-
-    const rowSending = document.createElement("td");
-    rowSending.textContent = subscriber.sending;
-
     row.append(
       rowRegDate,
       rowFirstName,
-      rowUsername,
-      rowBox,
-      rowCompany,
-      rowNumber,
-      rowName,
-      rowEmail
-    );
-    const tbody = document.querySelector(".tBody");
-    tbody.append(row);
-  }
-}
-
-function createDataBot(data) {
-  for (let subscriber of data) {
-    const row = document.createElement("tr");
-    row.className = "database";
-
-    const inputDate = subscriber.time;
-    const splited = inputDate.split("/");
-    const swaped = [splited[0], splited[1], splited[2]].join(".");
-
-    const rowRegDate = document.createElement("td");
-    rowRegDate.className = "date";
-    rowRegDate.type = "date";
-    rowRegDate.textContent = swaped;
-
-    const rowFirstName = document.createElement("td");
-    rowFirstName.textContent = subscriber.name;
-
-    const rowUsername = document.createElement("td");
-    rowUsername.textContent = subscriber.username;
-
-    const rowBox = document.createElement("td");
-    rowBox.textContent = subscriber.card;
-
-    const rowCompany = document.createElement("td");
-    rowCompany.textContent = subscriber.company;
-
-    const rowNumber = document.createElement("td");
-    rowNumber.textContent = subscriber.phone;
-
-    const rowName = document.createElement("td");
-    rowName.textContent = subscriber.email;
-
-    const rowEmail = document.createElement("td");
-    rowEmail.textContent = subscriber.crm;
-
-    const rowTelephony = document.createElement("td");
-    rowTelephony.textContent = subscriber.telephony;
-
-    const rowRobotType = document.createElement("td");
-    rowRobotType.textContent = subscriber.robotType;
-
-    const rowNumberOf = document.createElement("td");
-    rowNumberOf.textContent = subscriber.numberOfPhones;
-
-    const rowCRM = document.createElement("td");
-    rowCRM.textContent = subscriber.CRMName;
-
-    const rowCMS = document.createElement("td");
-    rowCMS.textContent = subscriber.CMS;
-
-    const rowAnswer = document.createElement("td");
-    rowAnswer.textContent = subscriber.answer;
-
-    const rowScenario = document.createElement("td");
-    rowScenario.textContent = subscriber.scenario;
-
-    const rowSending = document.createElement("td");
-    rowSending.textContent = subscriber.sending;
-
-    row.append(
-      rowRegDate,
-      rowFirstName,
-      rowUsername,
       rowBox,
       rowCompany,
       rowNumber,
@@ -250,9 +148,6 @@ function createTable() {
   const firstNameHead = document.createElement("th");
   firstNameHead.textContent = "TG (first_name)";
 
-  const userNameHead = document.createElement("th");
-  userNameHead.textContent = "TG (username)";
-
   const boxHead = document.createElement("th");
   boxHead.textContent = "Название коробки";
 
@@ -271,7 +166,6 @@ function createTable() {
   mainTable.append(
     regDateHead,
     firstNameHead,
-    userNameHead,
     boxHead,
     companyHead,
     numberHead,
@@ -280,23 +174,17 @@ function createTable() {
   );
   mainTable.append(tbody);
   document.body.append(mainTable);
-  const data_site = document.getElementById("json2").innerHTML;
-
-  const data_bot = document.getElementById("json3").innerHTML;
+  const data_site = subscribers;
 
   const data = data_site;
-  const data2 = data_bot;
+
+  console.log(data);
 
   const sortedSubscribers = data.sort(
     (a, b) => new Date(b.time) - new Date(a.time)
   );
 
-  const sortedSubscribers2 = data2.sort(
-    (a, b) => new Date(b.time) - new Date(a.time)
-  );
-
   createData(sortedSubscribers);
-  createDataBot(sortedSubscribers2);
 }
 
 const switchTable = document.createElement("button");
