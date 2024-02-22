@@ -1,0 +1,47 @@
+{% extends admin_base_template %}
+
+{% block head_css %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/my_flask_admin.css') }}">
+{% endblock %}
+
+{% comment %} <!DOCTYPE html>
+<html lang="en">
+</style>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% extends admin_base_template %}
+
+    {% block head_css %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/login.css') }}">
+    {% endblock %}
+
+    {%block content%}
+        <div class = "container">
+            {% if error %}
+                <label>{{ error }}</label>
+            {% else %}
+                <label>Введите логин и пароль</label>
+            {% endif %}
+
+            <form action="" method = "POST">
+                <p> Логин <input class = "pol" type = "text" name = "username" /></p>
+                <p> Пароль <input class = "pol" type = "password" name = "password" /></p>
+                <select id="tableSelect" name = 'tableS'>
+                    <option id="tableUsers">Пользователи, зашедшие в бота</option>
+                    <option id="tableBox">Пользователи, отправившие заявку</option>
+                </select>
+                <input class = "but" type = "submit" value = "Отправить" />
+            </form>
+        </div>
+    {%endblock%} 
+
+</body>
+
+</html> {% endcomment %}
