@@ -484,6 +484,7 @@ function form(card) {
   politicChecbox.for = "politicCheckbox";
   politicLabel.textContent =
     "Я ПРИНИМАЮ УСЛОВИЯ ПОЛИТИКИ КОНФИДЕНЦИАЛЬНОСТИ И ЛИЦЕНЗИОННОГО СОГЛАШЕНИЯ";
+    var link1 = politicLabel.textContent.link("https://www.anncom.ru/o-companii/privacy-policy/")
 
   politicForm.append(politicChecbox, politicLabel);
   form.append(politicForm);
