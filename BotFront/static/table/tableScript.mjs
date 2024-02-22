@@ -1,3 +1,10 @@
+function createArray(arr) {
+  var newJson = arr.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
+  newJson = newJson.replace(/'/g, '"');
+  var data = JSON.parse(newJson);
+  return data;
+}
+
 function tableSearch() {
   var phrase = document.getElementById("searchName");
   var table = document.getElementById("mainTable");
@@ -108,23 +115,25 @@ function createTable() {
 
   // Данные юзеров
   const data_users = document.getElementById("json").innerHTML;
-  console.log(data_users);
 
-  var newJson = data_users.replace(/([a-zA-Z0-9]+?):/g, '"$1":');
-  newJson = newJson.replace(/'/g, '"');
+  const data = createArray(data_users);
 
-  var data = JSON.parse(newJson);
+  const sortedSubscribers = data.sort(
+    (a, b) => new Date(a.time) - new Date(b.time)
+  );
 
-  for (let subscriber of data) {
+  for (let subscriber of sortedSubscribers) {
     const row = document.createElement("tr");
     row.className = "database";
 
+    const inputDate = subscriber.time;
+    const splited = inputDate.split("/");
+    const swaped = [splited[0], splited[1], splited[2]].join(".");
+
     const rowRegDate = document.createElement("td");
     rowRegDate.className = "date";
-    rowRegDate.textContent = subscriber.time;
-
-    const rowTimeReg = document.createElement("td");
-    rowTimeReg.textContent = subscriber.registrationTime;
+    rowRegDate.type = "date";
+    rowRegDate.textContent = swaped;
 
     const rowFirstName = document.createElement("td");
     rowFirstName.textContent = subscriber.name;
